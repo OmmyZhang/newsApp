@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom"
         />
     <item android:id="@+id/other"
-        android:icon="@mipmap/ic_thinking"
+        android:icon="@mipmap/ic_launcher"
         android:title="@string/app_name"
         />
     <item android:id="@+id/other"
