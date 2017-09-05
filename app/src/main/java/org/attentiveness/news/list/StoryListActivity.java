@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import org.attentiveness.news.R;
@@ -34,6 +36,13 @@ public class StoryListActivity extends BaseActivity {
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         StoryListPresenter presenter = new StoryListPresenter(repository, newsListFragment);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     @Override
