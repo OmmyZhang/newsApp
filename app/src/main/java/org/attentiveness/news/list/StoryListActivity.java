@@ -1,5 +1,7 @@
 package org.attentiveness.news.list;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -71,7 +73,16 @@ public class StoryListActivity extends BaseActivity {
                     case R.id.nav_feedback:
                         break;
                     case R.id.nav_about:
-                        break;
+                    {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(StoryListActivity.this);
+                        builder.setMessage("作者:(字典序)\n\nssq\nyjy\nzyn\n")
+                                .setTitle("关于")
+                                .setPositiveButton("确定", null);
+
+                        AlertDialog dialog_about = builder.create();
+                        dialog_about.show();
+
+                    }
                     case R.id.nav_settings:
                         break;
                     default:

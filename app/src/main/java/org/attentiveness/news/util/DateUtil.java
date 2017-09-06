@@ -21,7 +21,7 @@ public class DateUtil {
     }
 
     private static SimpleDateFormat getDataFormat() {
-        return new SimpleDateFormat("yyyyMMdd", Locale.US);
+        return new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
     }
 
 }

@@ -27,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpManager {
 
     private static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
+    //http://166.111.68.66:2042/news/action/query/latest
 
     private static HttpManager INSTANCE = null;
 
