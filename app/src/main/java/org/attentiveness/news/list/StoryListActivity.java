@@ -43,7 +43,7 @@ public class StoryListActivity extends BaseActivity {
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
-        StoryListPresenter presenter = new StoryListPresenter(repository, newsListFragment);
+        new StoryListPresenter(repository, newsListFragment);
     }
 
     Runnable runnable = new Runnable() { // show how to use GetNews
@@ -84,7 +84,7 @@ public class StoryListActivity extends BaseActivity {
                 }
 
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e.toString());
             }
         }
     };

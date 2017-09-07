@@ -3,17 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/other"
+    <item android:id="@+id/search"
         android:icon="@mipmap/ic_search"
         android:title="@string/search"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         />
-    <item android:id="@+id/other"
+    <item android:id="@+id/flash"
         android:icon="@mipmap/ic_launcher"
-        android:title="@string/app_name"
+        android:title="@string/flash"
         />
     <item android:id="@+id/other"
         android:title="@string/night_mode"
+        android:checkable="true"
+        />
+    <item android:id="@+id/other"
+        android:title="@string/no_picture"
         android:checkable="true"
         />
 

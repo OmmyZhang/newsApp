@@ -2,6 +2,7 @@ package org.attentiveness.news.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class News {
@@ -28,7 +29,11 @@ public class News {
     }
 
     public List<Story> getStoryList() {
-        return storyList;
+        ArrayList<Story> sL = new ArrayList<Story>(storyList);
+        sL.add(0,new Story(0,"zyn_test1"));
+        sL.add(0,new Story(1,"zyn_test2"));
+        return sL;
+        //return storyList;
     }
 
     public void setStoryList(List<Story> storyList) {
