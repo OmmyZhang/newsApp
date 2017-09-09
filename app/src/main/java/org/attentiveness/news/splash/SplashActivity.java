@@ -1,6 +1,5 @@
 package org.attentiveness.news.splash;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -68,7 +67,7 @@ public class SplashActivity extends BaseActivity{
 
     private void init() {
 
-        myTTS.speak("测试测试测试", TextToSpeech.QUEUE_FLUSH, null);
+        myTTS.speak("test test test test", TextToSpeech.QUEUE_FLUSH, null);
 
         mTimer = new CountDownTimer(2000, 1000) {
             @Override
@@ -83,7 +82,7 @@ public class SplashActivity extends BaseActivity{
             }
         };
         mTimer.start();
-        myTTS.speak("还是测试测试测试", TextToSpeech.QUEUE_ADD, null);
+        myTTS.speak("and more test test test", TextToSpeech.QUEUE_ADD, null);
     }
 
     private void navigate() {

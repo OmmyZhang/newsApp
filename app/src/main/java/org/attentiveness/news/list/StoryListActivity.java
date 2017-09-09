@@ -2,12 +2,14 @@ package org.attentiveness.news.list;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
@@ -20,6 +22,7 @@ import org.attentiveness.news.util.DateUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 
 import butterknife.ButterKnife;
 
@@ -59,7 +62,7 @@ public class StoryListActivity extends BaseActivity {
                 HashSet<String> notShow = new HashSet<String>();
                 notShow.add("北京");
 
-                GetNews gn = new GetNews(tags, notShow, 5);
+                /*GetNews gn = new GetNews(tags, notShow, 5);
 
                 System.out.println("[latest]:");
                 ArrayList<HashMap> list1 = gn.getMore();
@@ -81,7 +84,7 @@ public class StoryListActivity extends BaseActivity {
                         String k = (String) key, v = (String) news.get(k);
                         System.out.println(k + ":" + v);
                     }
-                }
+                }*/
 
             } catch (Exception e) {
                 System.out.println(e.toString());

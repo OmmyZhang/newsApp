@@ -20,6 +20,8 @@ public class News {
     @SerializedName("top_stories")
     private List<Story> topStoryList;
 
+    GetNews getnews;
+
     public News() {
 
     }
@@ -40,16 +42,15 @@ public class News {
         tags.add("文化");
         HashSet<String> notshow = new HashSet<>();
         int pagesize = 10;
-        GetNews getnews = new GetNews(tags, notshow, pagesize);
-        ArrayList<HashMap> detaillist = getnews.getMore();
+        //GetNews getnews = new GetNews(tags, notshow, pagesize);
+        //getnews.getInstance(tags, notshow, pagesize);
+        ArrayList<HashMap> detaillist = getnews.getInstance(tags, notshow, pagesize).getMore();
         int i = 0;
         for (HashMap map : detaillist) {
-            storylist.add(0, new Story(i, (String) map.get("news_title")));
-            System.out.println(map.get("news_title"));
+            storylist.add(0, new Story(i, (String) map.get("news_Title")));
+            System.out.println("storymap:" + map.get("news_Title"));
             i++;
         }
-        storylist.add(0,new Story(0,"zyn_test1"));
-        storylist.add(0,new Story(1,"zyn_test2"));
         return storylist;
     }
 

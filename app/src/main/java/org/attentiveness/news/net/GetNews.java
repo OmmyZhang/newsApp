@@ -17,7 +17,15 @@ public class GetNews
     private int searchNo;
     private String searchKey;
 
-    public GetNews(HashSet<String> cT,HashSet<String> nS,int pS)
+    private static GetNews INSTANCE = null;
+
+    public static GetNews getInstance(HashSet<String> cT,HashSet<String> nS,int pS) {
+        if (INSTANCE == null)
+            INSTANCE = new GetNews(cT, nS, pS);
+        return INSTANCE;
+    }
+
+    private GetNews(HashSet<String> cT,HashSet<String> nS,int pS)
     {
         classTag = cT;
         notShow = nS;
