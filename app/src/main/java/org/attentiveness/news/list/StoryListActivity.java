@@ -14,12 +14,7 @@ import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
-import org.attentiveness.news.net.GetNews;
 import org.attentiveness.news.util.DateUtil;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
 import butterknife.ButterKnife;
 
@@ -39,55 +34,10 @@ public class StoryListActivity extends BaseActivity {
             addFragment(getSupportFragmentManager(), R.id.fl_container, newsListFragment);
         }
 
-        new Thread(runnable).start(); // show how to use GetNews. To save user's time, put into SplashActivity maybe better
-
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         new StoryListPresenter(repository, newsListFragment);
     }
-
-    Runnable runnable = new Runnable() { // show how to use GetNews
-        @Override
-        public void run() {
-
-            try {
-                HashSet<String> tags = new HashSet<String>();
-                tags.add("科技");
-                tags.add("教育");
-                tags.add("文化");
-
-                HashSet<String> notShow = new HashSet<String>();
-                notShow.add("北京");
-
-                GetNews gn = new GetNews(tags, notShow, 5);
-
-                System.out.println("[latest]:");
-                ArrayList<HashMap> list1 = gn.getMore();
-                for (HashMap news : list1) {
-                    System.out.println("--------");
-                    for (Object key : news.keySet()) {
-                        String k = (String) key, v = (String) news.get(k);
-                        System.out.println(k + ":" + v);
-                    }
-                }
-
-
-                System.out.println("[search]:");
-                gn.search("清华大学");
-                ArrayList<HashMap> list2 = gn.searchMore();
-                for (HashMap news : list2) {
-                    System.out.println("--------");
-                    for (Object key : news.keySet()) {
-                        String k = (String) key, v = (String) news.get(k);
-                        System.out.println(k + ":" + v);
-                    }
-                }
-
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

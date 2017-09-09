@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/fav"
+        android:title="@string/fav"
+        app:showAsAction="always"
+        android:onClick="fav"
+        />
     <item android:id="@+id/read"
         android:icon="@mipmap/ic_read"
         android:title="@string/read"
         app:showAsAction="always"
         android:onClick="read_out"
+        />
+    <item android:id="@+id/share"
+        android:icon="@mipmap/ic_share"
+        android:title="@string/share"
+        app:showAsAction="ifRoom"
+        android:onClick="share"
         />
 </menu>
