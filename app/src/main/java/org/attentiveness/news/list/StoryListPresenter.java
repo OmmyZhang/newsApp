@@ -53,6 +53,7 @@ class StoryListPresenter implements StoryListContract.Presenter {
     }
 
     private void loadNewsList(@NonNull String date, boolean forceUpdate, final boolean showLoadingUI, final boolean append) {
+        System.out.println("LOAD: "+ date +"|"+ forceUpdate +"|"+ showLoadingUI +"|"+ append);
         if (showLoadingUI) {
             this.mNewsListView.setLoadingIndicator(true);
         }
