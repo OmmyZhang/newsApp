@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 public class SplashActivity extends BaseActivity{
 
     private CountDownTimer mTimer;
+    TextToSpeech myTTS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class SplashActivity extends BaseActivity{
                             "朗读功能可用", Toast.LENGTH_LONG).show();
                     // 设置使用美式英语朗读
                     int result = myTTS.setLanguage(Locale.CHINA);
+                    myTTS.speak("搞个大新闻" , TextToSpeech.QUEUE_FLUSH,null);
                     // 如果不支持所设置的语言
                     if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
                             && result != TextToSpeech.LANG_AVAILABLE) {
@@ -64,11 +66,7 @@ public class SplashActivity extends BaseActivity{
     }
 
 
-    TextToSpeech myTTS;
-
     private void init() {
-
-        myTTS.speak("测试测试测试", TextToSpeech.QUEUE_FLUSH, null);
 
         mTimer = new CountDownTimer(2000, 1000) {
             @Override
@@ -83,7 +81,6 @@ public class SplashActivity extends BaseActivity{
             }
         };
         mTimer.start();
-        myTTS.speak("还是测试测试测试", TextToSpeech.QUEUE_ADD, null);
     }
 
     private void navigate() {
