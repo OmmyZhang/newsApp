@@ -105,6 +105,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
             public void onRefresh() {
                 mLoadingCount = 0;
                 mDate = mOriginalDate;
+                mLoadMoreListener.refreshed();
                 mPresenter.loadNewsList(mDate, false, false);
             }
         });

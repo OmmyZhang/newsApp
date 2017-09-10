@@ -3,6 +3,8 @@ package org.attentiveness.news.list;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
 
 abstract class LoadMoreListener extends RecyclerView.OnScrollListener {
 
@@ -14,12 +16,18 @@ abstract class LoadMoreListener extends RecyclerView.OnScrollListener {
         this.mLinearLayoutManager = linearLayoutManager;
     }
 
+    public void refreshed()
+    {
+        mPreviousTotal = 0;
+    }
+
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);
 
         if (dy > 0 && this.mLinearLayoutManager != null) //check for scroll down
         {
+
             int visibleItemCount = this.mLinearLayoutManager.getChildCount();
             int totalItemCount = this.mLinearLayoutManager.getItemCount();
             int firstVisibleItem = this.mLinearLayoutManager.findFirstVisibleItemPosition();
@@ -31,10 +39,13 @@ abstract class LoadMoreListener extends RecyclerView.OnScrollListener {
                 }
             }
             int visibleThreshold = 1;
+
             if (!this.mLoading && totalItemCount > visibleItemCount
                     && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                 this.onLoadMore();
                 this.mLoading = true;
+
+
             }
         }
     }
