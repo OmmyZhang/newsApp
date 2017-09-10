@@ -4,9 +4,15 @@ package org.attentiveness.news.net;
  * Created by zhangyn on 17-9-7.
  */
 
-import java.net.*;
-import java.util.*;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Scanner;
 
 public class GetNews
 {
@@ -158,5 +164,9 @@ public class GetNews
             System.out.println(pageNo);
             return new JSONArray();
         }
+    }
+
+    public void clear() {
+        this.INSTANCE = null;
     }
 }

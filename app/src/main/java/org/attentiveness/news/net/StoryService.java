@@ -5,14 +5,14 @@ import org.attentiveness.news.data.StoryDetail;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface StoryService {
 
-    @GET("before/{date}")
-    Observable<News> getStoryList(@Path("date") String date);
+    @GET("latest")
+    Observable<News> getStories(@Query("pageNo") int pn, @Query("pageSize") int ps, @Query("category") int cg);
 
-    @GET("{id}")
-    Observable<StoryDetail> getStoryDetail(@Path("id") int storyId);
+    @GET("detail")
+    Observable<StoryDetail> getStoryDetail(@Query("newsId") String storyId);
 
 }

@@ -25,7 +25,7 @@ public class StoriesDataRepository implements StoriesDataSource {
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    private Map<Integer, Story> mCachedStories;
+    private Map<String, Story> mCachedStories;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -55,11 +55,13 @@ public class StoriesDataRepository implements StoriesDataSource {
             List<Story> storyList = (List<Story>) this.mCachedStories.values();
             return Observable.just(storyList);
         }
-        Observable<List<Story>> remoteStoryList = this.getAndSaveStoryListFromRemote(date);
+        Observable<List<Story>> remoteStoryList;
+        remoteStoryList = this.getAndSaveStoryListFromRemote(date);
         if (this.mCacheIsDirty) {
             return remoteStoryList;
         } else {
-            Observable<List<Story>> localStoryList = this.getAndSaveStoryListFromLocal(date);
+            Observable<List<Story>> localStoryList = null;
+            //localStoryList = this.getAndSaveStoryListFromLocal(date);
             return Observable.concat(localStoryList, remoteStoryList)
                     .filter(new Predicate<List<Story>>() {
                         @Override
@@ -80,7 +82,7 @@ public class StoriesDataRepository implements StoriesDataSource {
      * @return Observable wraps story detail.
      */
     @Override
-    public Observable<StoryDetail> getStoryDetail(int storyId) {
+    public Observable<StoryDetail> getStoryDetail(String storyId) {
         return this.mStoriesRemoteDataSource.getStoryDetail(storyId);
     }
 
@@ -117,9 +119,9 @@ public class StoriesDataRepository implements StoriesDataSource {
                     @Override
                     public void accept(@io.reactivex.annotations.NonNull List<Story> storyList) throws Exception {
                         mStoriesLocalDataSource.saveStories(storyList);
-                        for (Story story : storyList) {
+                        /*for (Story story : storyList) {
                             mCachedStories.put(story.getId(), story);
-                        }
+                        }*/
                     }
                 })
                 .doOnComplete(new Action() {

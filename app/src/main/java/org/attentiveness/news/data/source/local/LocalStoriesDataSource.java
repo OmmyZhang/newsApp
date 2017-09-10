@@ -42,12 +42,12 @@ public class LocalStoriesDataSource implements StoriesDataSource {
                 StoriesPersistenceContract.StoryEntry.COLUMN_NAME_TITLE};
         Cursor cursor = database.query(StoriesPersistenceContract.StoryEntry.TABLE_NAME, projections, null, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
-            while (cursor.moveToNext()) {
+            /*while (cursor.moveToNext()) {
                 int storyId = cursor.getInt(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_STORY_ID));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_TITLE));
                 Story story = new Story(storyId, title);
                 storyList.add(story);
-            }
+            }*/
         }
         if (cursor != null) {
             cursor.close();
@@ -61,7 +61,7 @@ public class LocalStoriesDataSource implements StoriesDataSource {
     }
 
     @Override
-    public Observable<StoryDetail> getStoryDetail(int storyId) {
+    public Observable<StoryDetail> getStoryDetail(String storyId) {
         //Do not save story detail in local storage, so do nothing
         return null;
     }

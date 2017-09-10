@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Story {
 
-    private int id;
+    private String newsid;
     private String title;
 
     @SerializedName("images")
@@ -16,17 +16,17 @@ public class Story {
 
     }
 
-    public Story(int id, String title) {
-        this.id = id;
+    public Story(String newsid, String title) {
+        this.newsid = newsid;
         this.title = title;
     }
 
-    public int getId() {
-        return id;
+    public String getId() {
+        return newsid;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setId(String newsid) {
+        this.newsid = newsid;
     }
 
     public String getTitle() {

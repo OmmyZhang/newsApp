@@ -35,7 +35,7 @@ public class News {
     }
 
     public List<Story> getStoryList() throws Exception {
-        ArrayList<Story> storylist = new ArrayList<Story>(storyList);
+        ArrayList<Story> storylist = new ArrayList<Story>();
         HashSet<String> tags = new HashSet<>();
         tags.add("科技");
         tags.add("教育");
@@ -47,7 +47,7 @@ public class News {
         ArrayList<HashMap> detaillist = getnews.getInstance(tags, notshow, pagesize).getMore();
         int i = 0;
         for (HashMap map : detaillist) {
-            storylist.add(0, new Story(i, (String) map.get("news_Title")));
+            storylist.add(0, new Story((String) map.get("news_ID"), (String) map.get("news_Title")));
             System.out.println("storymap:" + map.get("news_Title"));
             i++;
         }

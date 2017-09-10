@@ -1,36 +1,31 @@
 package org.attentiveness.news.detail;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
-import org.attentiveness.news.data.StoryDetail;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
 import org.attentiveness.news.list.StoryListFragment;
-import org.attentiveness.news.splash.SplashActivity;
 
 import java.util.Locale;
 
 import butterknife.BindDrawable;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StoryDetailActivity extends BaseActivity {
 
     private static final String INSTANCE_STORY_ID = "story_id";
 
-    private int mStoryId;
+    private String mStoryId;
     TextToSpeech readTTS;
 
     private MenuItem it_fav;
@@ -51,9 +46,9 @@ public class StoryDetailActivity extends BaseActivity {
         setup();
 
         if (savedInstanceState == null) {
-            this.mStoryId = getIntent().getIntExtra(StoryListFragment.EXTRA_ID, 0);
+            this.mStoryId = getIntent().getStringExtra(StoryListFragment.EXTRA_ID);
         } else {
-            this.mStoryId = savedInstanceState.getInt(INSTANCE_STORY_ID);
+            this.mStoryId =  savedInstanceState.getString(INSTANCE_STORY_ID);
         }
 
         StoryDetailFragment storyDetailFragment = (StoryDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
@@ -91,7 +86,7 @@ public class StoryDetailActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(INSTANCE_STORY_ID, this.mStoryId);
+        //outState.putInt(INSTANCE_STORY_ID, this.mStoryId);
     }
 
     public void read_out(MenuItem it) {

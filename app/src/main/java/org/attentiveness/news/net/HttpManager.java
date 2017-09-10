@@ -26,8 +26,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class HttpManager {
 
-    private static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
-    //http://166.111.68.66:2042/news/action/query/latest
+    //private static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
+    private static final String BASE_URL = "http://166.111.68.66:2042/news/action/query/";
 
     private static HttpManager INSTANCE = null;
 
@@ -65,15 +65,21 @@ public class HttpManager {
                 }
             });
         }
-        return this.mStoryService.getStoryList(date).map(new Function<News, List<Story>>() {
+        return  this.mStoryService.getStories(1, 10, 1).map(new Function<News, List<Story>>() {
             @Override
             public List<Story> apply(@NonNull News news) throws Exception {
                 return news.getStoryList();
             }
         });
+        /*return this.mStoryService.getStoryList(date).map(new Function<News, List<Story>>() {
+            @Override
+            public List<Story> apply(@NonNull News news) throws Exception {
+                return news.getStoryList();
+            }
+        });*/
     }
 
-    public Observable<StoryDetail> getStory(int storyId) {
+    public Observable<StoryDetail> getStory(String storyId) {
         if (!this.isConnected()) {
             return Observable.error(new Callable<Throwable>() {
                 @Override

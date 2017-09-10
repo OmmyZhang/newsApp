@@ -186,7 +186,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
 
     @Override
     public void onStoryClicked(Story story) {
-        if (story != null && story.getId() > 0) {
+        if (story != null) {
             Intent intent = new Intent(this.getActivity(), StoryDetailActivity.class);
             intent.putExtra(EXTRA_ID, story.getId());
             startActivity(intent);

@@ -30,7 +30,8 @@ public class RemoteDataManager implements  Runnable {
 
     @Override
     public void run() {
-        gn = new GetNews(classTag , notShow ,mPageSize);
+        gn.clear();
+        gn.getInstance(classTag , notShow ,mPageSize);
 
     }
 
