@@ -12,7 +12,7 @@ import io.reactivex.functions.Consumer;
 
 class StoryDetailPresenter implements StoryDetailContract.Presenter {
 
-    private int mStoryId;
+    private String mStoryId;
     @NonNull
     private StoriesDataRepository mRepository;
     @NonNull
@@ -20,7 +20,7 @@ class StoryDetailPresenter implements StoryDetailContract.Presenter {
     private CompositeDisposable mDisposables;
     private BaseSchedulerProvider mSchedulerProvider;
 
-    StoryDetailPresenter(int storyId, @NonNull StoriesDataRepository repository, @NonNull StoryDetailContract.View view) {
+    StoryDetailPresenter(String storyId, @NonNull StoriesDataRepository repository, @NonNull StoryDetailContract.View view) {
         this.mStoryId = storyId;
         this.mRepository = repository;
         this.mView = view;
@@ -39,7 +39,7 @@ class StoryDetailPresenter implements StoryDetailContract.Presenter {
         this.mDisposables.clear();
     }
 
-    private void requestStoryDetail(int storyId) {
+    private void requestStoryDetail(String storyId) {
         this.mRepository.getStoryDetail(storyId).subscribeOn(this.mSchedulerProvider.io())
                 .observeOn(this.mSchedulerProvider.ui())
                 .subscribe(

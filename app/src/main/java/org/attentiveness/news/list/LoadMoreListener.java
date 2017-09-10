@@ -19,6 +19,7 @@ abstract class LoadMoreListener extends RecyclerView.OnScrollListener {
     public void refreshed()
     {
         mPreviousTotal = 0;
+        mLoading = true;
     }
 
     @Override
@@ -44,9 +45,8 @@ abstract class LoadMoreListener extends RecyclerView.OnScrollListener {
                     && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                 this.onLoadMore();
                 this.mLoading = true;
-
-
             }
+
         }
     }
 

@@ -8,8 +8,9 @@ import java.util.List;
 
 public class Story {
 
-    private int id;
+    private String id;
     private String title;
+    private String intro;
 
     private List<String> imageList;
 
@@ -17,9 +18,10 @@ public class Story {
 
     }
 
-    public Story(int id, String title,String img) {
-        this.id = 9608295;
+    public Story(String id, String title,String img,String intro) {
+        this.id = id;
         this.title = title;
+        this.intro = intro;
         if(!img.contains("http"))
             imageList = null;
         else {
@@ -28,11 +30,11 @@ public class Story {
         }
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -42,6 +44,10 @@ public class Story {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getIntro(){
+        return intro;
     }
 
     public List<String> getImageList() {

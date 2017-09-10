@@ -6,37 +6,24 @@ import java.util.List;
 
 public class StoryDetail {
 
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("body")
-    private String content;
-
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("image")
-    private String imageUrl;
-
-    @SerializedName("image_source")
-    private String imageSource;
-
-    @SerializedName("js")
-    private List<String> jsList;
-
-    @SerializedName("css")
-    private List<String> cssList;
+    private String content,category,url,title;
 
     public StoryDetail() {
 
     }
-
+    public StoryDetail(String title,String category,String content,String url)
+    {
+        this.title = title;
+        this.category = category;
+        this.content = content;
+        this.url = url;
+    }
     public int getId() {
-        return id;
+        return 0;
     }
 
     public void setId(int id) {
-        this.id = id;
+
     }
 
     public String getContent() {
@@ -50,40 +37,7 @@ public class StoryDetail {
     public String getTitle() {
         return title;
     }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getImageSource() {
-        return imageSource;
-    }
-
-    public void setImageSource(String imageSource) {
-        this.imageSource = imageSource;
-    }
-
-    public List<String> getJsList() {
-        return jsList;
-    }
-
-    public void setJsList(List<String> jsList) {
-        this.jsList = jsList;
-    }
-
-    public List<String> getCssList() {
-        return cssList;
-    }
-
-    public void setCssList(List<String> cssList) {
-        this.cssList = cssList;
+    public String getCategory() {
+        return category;
     }
 }

@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -47,6 +48,8 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
     private String mOriginalDate;
     private String mDate;
     private int mLoadingCount;
+
+    private boolean needRefresh = true;
 
     public static StoryListFragment newInstance(String date) {
         StoryListFragment storyListFragment = new StoryListFragment();
@@ -122,7 +125,10 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
     @Override
     public void onResume() {
         super.onResume();
-        this.mPresenter.subscribe();
+        if(needRefresh) {
+            this.mPresenter.subscribe();
+            needRefresh = false;
+        }
         this.mStoriesView.addOnScrollListener(this.mLoadMoreListener);
     }
 
@@ -187,7 +193,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
 
     @Override
     public void onStoryClicked(Story story) {
-        if (story != null && story.getId() > 0) {
+        if (story != null && !story.getId().equals("")) {
             Intent intent = new Intent(this.getActivity(), StoryDetailActivity.class);
             intent.putExtra(EXTRA_ID, story.getId());
             startActivity(intent);
@@ -201,4 +207,8 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         this.mPresenter.loadNewsList(this.mDate, true, false);
     }
 
+    void refresh_from_menu() {
+        mLoadMoreListener.refreshed();
+        mPresenter.loadNewsList(mDate, false, false);
+    }
 }

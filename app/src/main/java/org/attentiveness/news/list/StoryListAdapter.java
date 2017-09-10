@@ -11,6 +11,7 @@ import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.data.Story;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +48,16 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
         }
         ImageView imageView = holder.mImageView;
         TextView titleView = holder.mTitleView;
+        TextView introView = holder.mIntroView;
         titleView.setText(story.getTitle());
+        String intro = story.getIntro();
+        while(intro.length() > 0 && (intro.charAt(0) == ' ' || intro.charAt(0) == '　'))
+            intro = intro.substring(1);
+        introView.setText(intro);
         try {
-            Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_launcher).into(imageView);
+            Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_read).into(imageView);
         }catch(Exception e) {
-            Picasso.with(holder.mImageView.getContext()).load("MoFeng").error(R.mipmap.ic_launcher).into(imageView);
+            Picasso.with(holder.mImageView.getContext()).load("MoFeng").error(R.mipmap.ic_search).into(imageView);
             System.out.println(imageUrl + " Img error: " + e);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +101,8 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
         ImageView mImageView;
         @BindView(R.id.tv_title)
         TextView mTitleView;
+        @BindView(R.id.tv_intro)
+        TextView mIntroView;
 
         ViewHolder(View itemView) {
             super(itemView);

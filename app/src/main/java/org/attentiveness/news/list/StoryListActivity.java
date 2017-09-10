@@ -29,6 +29,7 @@ public class StoryListActivity extends BaseActivity {
     private ViewPager mVP;
     private SlidePagerAdapter spa;
     private ArrayList<Fragment> fList;
+    private  StoryListFragment newsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +39,11 @@ public class StoryListActivity extends BaseActivity {
         setup(R.drawable.ic_menu);
 
         String today = DateUtil.getToday();
-        StoryListFragment newsListFragment = StoryListFragment.newInstance(today);
+        newsListFragment = StoryListFragment.newInstance(today);
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
-        new StoryListPresenter(repository, newsListFragment);
+        StoryListPresenter newListPresenter= new StoryListPresenter(repository, newsListFragment);
 
         YouMayLikeFragment newMayLikeFragement = YouMayLikeFragment.newInstance();
 
@@ -115,4 +116,8 @@ public class StoryListActivity extends BaseActivity {
         });
     }
 
+    public void refresh(MenuItem it)
+    {
+        newsListFragment.refresh_from_menu();
+    }
 }

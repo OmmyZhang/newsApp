@@ -6,6 +6,8 @@ package org.attentiveness.news.net;
 
 import java.net.*;
 import java.util.*;
+
+import org.attentiveness.news.data.StoryDetail;
 import org.json.*;
 
 public class GetNews
@@ -39,7 +41,6 @@ public class GetNews
     public ArrayList<HashMap> getMore() throws Exception
     {
         ++currNo;
-        System.out.println("currNo: " + currNo);
         JSONArray result = latest(pageSize , currNo);
 
         ArrayList<HashMap> ans = new ArrayList<HashMap>();
@@ -74,7 +75,7 @@ public class GetNews
         return ans;
     }
 
-    public HashMap<String,String> getDetail(String id) throws Exception {
+    public StoryDetail getDetail(String id) throws Exception {
         URL cs = new URL(BASE_URL + "detail?newsId=" + id);
 
         Scanner w = new Scanner(cs.openStream());
@@ -85,12 +86,12 @@ public class GetNews
 
         JSONObject jo = new JSONObject(data);
 
-        HashMap<String, String> dt = new HashMap<String, String>();
-        dt.put("news_Category", jo.getString("news_Category"));
-        dt.put("news_Content", jo.getString("news_Content"));
-        dt.put("news_URL", jo.getString("news_URL"));
+        return new StoryDetail(
+                jo.getString("news_Title"),
+                jo.getString("news_Category"),
+                jo.getString("news_Content"),
+                jo.getString("news_URL"));
 
-        return dt;
     }
 
     public void search(String key)

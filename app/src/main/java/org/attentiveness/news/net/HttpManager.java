@@ -5,12 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import org.attentiveness.news.R;
-import org.attentiveness.news.data.News;
 import org.attentiveness.news.data.Story;
 import org.attentiveness.news.data.StoryDetail;
 import org.attentiveness.news.exception.NetworkException;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +16,6 @@ import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Http Manager that responds to url request.
@@ -35,7 +27,6 @@ public class HttpManager {
     private static HttpManager INSTANCE = null;
 
     private Context mContext;
-    private StoryService mStoryService;
 
     public static HttpManager getInstance(Context context) {
         if (INSTANCE == null) {
@@ -49,14 +40,6 @@ public class HttpManager {
      */
     private HttpManager(Context context) {
         this.mContext = context;
-        OkHttpClient client = new OkHttpClient.Builder().build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
-                .baseUrl(BASE_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        this.mStoryService = retrofit.create(StoryService.class);
     }
 
     public Observable<List<Story>> getStoryList(String date) {
@@ -79,12 +62,15 @@ public class HttpManager {
                     sL = new ArrayList<Story>();
 
                     if (list == null)
-                        sL.add(new Story(0, "没有更多啦~", ""));
+                        sL.add(new Story("", "没有更多啦~", "",""));
                     else if (list.size() == 0)
-                        sL.add(new Story(0, "都被滤掉啦~\n继续刷新或者减少敏感词吧", ""));
+                        sL.add(new Story("", "都被滤掉啦~","","继续刷新或者减少敏感词吧"));
                     else
                         for (HashMap e : list) {
-                            sL.add(new Story(0, (String) e.get("news_Title"), (String) e.get("news_Pictures")));
+                            sL.add(new Story((String) e.get("news_ID"),
+                                    (String) e.get("news_Title"),
+                                    (String) e.get("news_Pictures"),
+                                    (String) e.get("news_Intro")));
                         }
 
 
@@ -98,17 +84,10 @@ public class HttpManager {
                 }
             }
         };
-/*
-        return this.mStoryService.getStoryList(date).map(new Function<News, List<Story>>() {
-            @Override
-            public List<Story> apply(@NonNull News news) throws Exception {
-                return news.getStoryList();
-            }
-        });
-      */
+
     }
 
-    public Observable<StoryDetail> getStory(int storyId) {
+    public Observable<StoryDetail> getStory(final String sId) {
         if (!this.isConnected()) {
             return Observable.error(new Callable<Throwable>() {
                 @Override
@@ -117,7 +96,24 @@ public class HttpManager {
                 }
             });
         }
-        return this.mStoryService.getStoryDetail(storyId);
+        return new Observable<StoryDetail>() {
+            @Override
+            protected void subscribeActual(Observer<? super StoryDetail> observer) {
+                GetNews gn = GetNews.getINSTANCE();
+                try {
+                    observer.onNext(gn.getDetail(sId));
+                }catch (Exception e)
+                {
+                    observer.onError(e);
+                }
+                finally{
+                    observer.onComplete();
+                }
+
+
+            }
+        };
+//        return this.mStoryService.getStoryDetail(storyId);
     }
 
     private boolean isConnected() {

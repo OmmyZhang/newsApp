@@ -8,9 +8,10 @@
         android:title="@string/search"
         app:showAsAction="always"
         />
-    <item android:id="@+id/flash"
+    <item android:id="@+id/refresh"
         android:icon="@mipmap/ic_launcher"
         android:title="@string/flash"
+        android:onClick="refresh"
         />
     <item android:id="@+id/night_mode"
         android:title="@string/night_mode"

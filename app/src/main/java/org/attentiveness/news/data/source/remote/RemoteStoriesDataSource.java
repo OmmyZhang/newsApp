@@ -36,7 +36,7 @@ public class RemoteStoriesDataSource implements StoriesDataSource {
     }
 
     @Override
-    public Observable<StoryDetail> getStoryDetail(int storyId) {
+    public Observable<StoryDetail> getStoryDetail(String storyId) {
         return HttpManager.getInstance(this.mContext).getStory(storyId);
     }
 
