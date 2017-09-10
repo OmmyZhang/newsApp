@@ -4,10 +4,14 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
@@ -16,9 +20,15 @@ import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
 import org.attentiveness.news.util.DateUtil;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 
 public class StoryListActivity extends BaseActivity {
+
+    private ViewPager mVP;
+    private SlidePagerAdapter spa;
+    private ArrayList<Fragment> fList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +37,24 @@ public class StoryListActivity extends BaseActivity {
         ButterKnife.bind(this);
         setup(R.drawable.ic_menu);
 
-        StoryListFragment newsListFragment = (StoryListFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
-        if (newsListFragment == null) {
-            String today = DateUtil.getToday();
-            newsListFragment = StoryListFragment.newInstance(today);
-            addFragment(getSupportFragmentManager(), R.id.fl_container, newsListFragment);
-        }
+        String today = DateUtil.getToday();
+        StoryListFragment newsListFragment = StoryListFragment.newInstance(today);
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         new StoryListPresenter(repository, newsListFragment);
+
+        YouMayLikeFragment newMayLikeFragement = YouMayLikeFragment.newInstance();
+
+        mVP = (ViewPager) findViewById(R.id.vpg);
+
+        fList = new ArrayList<Fragment>();
+        fList.add(newsListFragment);
+        fList.add(newMayLikeFragement);
+
+        spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
+        mVP.setAdapter(spa);
+
     }
 
     @Override

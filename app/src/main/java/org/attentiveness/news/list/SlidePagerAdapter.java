@@ -1,45 +1,42 @@
 package org.attentiveness.news.list;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
  * Created by zhangyn on 17-9-9.
  */
 
-public class SlidePagerAdapter extends PagerAdapter {
+public class SlidePagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<View> viewLists;
+    private ArrayList<Fragment> fLists;
 
-    public SlidePagerAdapter() {
+    public SlidePagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
+        super(fm);
+        fLists = list;
     }
 
-    public SlidePagerAdapter(ArrayList<View> viewLists) {
-        super();
-        this.viewLists = viewLists;
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return (position == 0) ? "最新" : "猜你喜欢";
     }
+
 
     @Override
     public int getCount() {
-        return viewLists.size();
+        return fLists.size();
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view == object;
+    public Fragment getItem(int position){
+        return fLists.get(position);
     }
 
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        container.addView(viewLists.get(position));
-        return viewLists.get(position);
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView(viewLists.get(position));
-    }
 }
