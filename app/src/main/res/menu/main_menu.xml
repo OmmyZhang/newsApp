@@ -12,7 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:title="@string/flash"
         />
-    <item android:id="@+id/other"
+    <item android:id="@+id/night_mode"
         android:title="@string/night_mode"
         android:checkable="true"
         />

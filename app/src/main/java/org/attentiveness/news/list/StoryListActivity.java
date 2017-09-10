@@ -5,28 +5,32 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
-import org.attentiveness.news.net.GetNews;
 import org.attentiveness.news.util.DateUtil;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 
 public class StoryListActivity extends BaseActivity {
+
+    private ViewPager mVP;
+    private SlidePagerAdapter spa;
+    private ArrayList<Fragment> fList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,62 +39,26 @@ public class StoryListActivity extends BaseActivity {
         ButterKnife.bind(this);
         setup(R.drawable.ic_menu);
 
-        StoryListFragment newsListFragment = (StoryListFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
-        if (newsListFragment == null) {
-            String today = DateUtil.getToday();
-            newsListFragment = StoryListFragment.newInstance(today);
-            addFragment(getSupportFragmentManager(), R.id.fl_container, newsListFragment);
-        }
-
-        new Thread(runnable).start(); // show how to use GetNews. To save user's time, put into SplashActivity maybe better
+        String today = DateUtil.getToday();
+        StoryListFragment newsListFragment = StoryListFragment.newInstance(today);
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         new StoryListPresenter(repository, newsListFragment);
+
+        YouMayLikeFragment newMayLikeFragement = YouMayLikeFragment.newInstance();
+
+
+        mVP = (ViewPager) findViewById(R.id.vpg);
+
+        fList = new ArrayList<Fragment>();
+        fList.add(newsListFragment);
+        fList.add(newMayLikeFragement);
+
+        spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
+        mVP.setAdapter(spa);
+
     }
-
-    Runnable runnable = new Runnable() { // show how to use GetNews
-        @Override
-        public void run() {
-
-            try {
-                HashSet<String> tags = new HashSet<String>();
-                tags.add("科技");
-                tags.add("教育");
-                tags.add("文化");
-
-                HashSet<String> notShow = new HashSet<String>();
-                notShow.add("北京");
-
-                /*GetNews gn = new GetNews(tags, notShow, 5);
-
-                System.out.println("[latest]:");
-                ArrayList<HashMap> list1 = gn.getMore();
-                for (HashMap news : list1) {
-                    System.out.println("--------");
-                    for (Object key : news.keySet()) {
-                        String k = (String) key, v = (String) news.get(k);
-                        System.out.println(k + ":" + v);
-                    }
-                }
-
-
-                System.out.println("[search]:");
-                gn.search("清华大学");
-                ArrayList<HashMap> list2 = gn.searchMore();
-                for (HashMap news : list2) {
-                    System.out.println("--------");
-                    for (Object key : news.keySet()) {
-                        String k = (String) key, v = (String) news.get(k);
-                        System.out.println(k + ":" + v);
-                    }
-                }*/
-
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

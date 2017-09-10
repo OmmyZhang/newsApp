@@ -3,24 +3,20 @@ package org.attentiveness.news.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.speech.tts.TextToSpeech;
 import android.support.design.widget.NavigationView;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.list.StoryListActivity;
 
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity{
 
     private CountDownTimer mTimer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,30 +24,6 @@ public class SplashActivity extends BaseActivity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
-
-        myTTS = new TextToSpeech(SplashActivity.this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                // 如果装载TTS引擎成功
-                if (status == TextToSpeech.SUCCESS) {
-                    Toast.makeText(SplashActivity.this,
-                            "朗读功能可用", Toast.LENGTH_LONG).show();
-                    // 设置使用美式英语朗读
-                    int result = myTTS.setLanguage(Locale.CHINA);
-                    // 如果不支持所设置的语言
-                    if (result != TextToSpeech.LANG_COUNTRY_AVAILABLE
-                            && result != TextToSpeech.LANG_AVAILABLE) {
-                        Toast.makeText(SplashActivity.this,
-                                "暂时不支持这种语言的朗读！", Toast.LENGTH_LONG).show();
-                    }
-                }
-                else
-                {
-                    Toast.makeText(SplashActivity.this,
-                            "朗读功能不可用！", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
         init();
     }
@@ -63,11 +35,7 @@ public class SplashActivity extends BaseActivity{
     }
 
 
-    TextToSpeech myTTS;
-
     private void init() {
-
-        myTTS.speak("test test test test", TextToSpeech.QUEUE_FLUSH, null);
 
         mTimer = new CountDownTimer(2000, 1000) {
             @Override
@@ -82,7 +50,6 @@ public class SplashActivity extends BaseActivity{
             }
         };
         mTimer.start();
-        myTTS.speak("and more test test test", TextToSpeech.QUEUE_ADD, null);
     }
 
     private void navigate() {
@@ -97,8 +64,6 @@ public class SplashActivity extends BaseActivity{
             mTimer.cancel();
             mTimer = null;
         }
-        if(myTTS != null)
-            myTTS.shutdown();
     }
 
 }
