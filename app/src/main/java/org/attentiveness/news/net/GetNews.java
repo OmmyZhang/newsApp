@@ -11,13 +11,24 @@ import org.json.*;
 public class GetNews
 {
     final private static String BASE_URL = "http://166.111.68.66:2042/news/action/query/";
-    private HashSet<String> classTag;
-    private HashSet<String> notShow;
+    static private HashSet<String> classTag;
+    static private HashSet<String> notShow;
+    static private GetNews INSTANTCE;
+
     private int pageSize,currNo;
     private int searchNo;
     private String searchKey;
 
-    public GetNews(HashSet<String> cT,HashSet<String> nS,int pS)
+    static public void newINSTANCE(HashSet<String> cT,HashSet<String> nS,int pS)
+    {
+        INSTANTCE = new GetNews(cT,nS,pS);
+    }
+    static public  GetNews getINSTANCE()
+    {
+        return INSTANTCE;
+    }
+
+    private GetNews(HashSet<String> cT,HashSet<String> nS,int pS)
     {
         classTag = cT;
         notShow = nS;
@@ -28,6 +39,7 @@ public class GetNews
     public ArrayList<HashMap> getMore() throws Exception
     {
         ++currNo;
+        System.out.println("currNo: " + currNo);
         JSONArray result = latest(pageSize , currNo);
 
         ArrayList<HashMap> ans = new ArrayList<HashMap>();
@@ -38,8 +50,8 @@ public class GetNews
         for(int i=0;i<result.length();++i)
         {
             JSONObject e = result.getJSONObject(i);
-            if(!classTag.contains(e.getString("newsClassTag")))
-                break;
+            if(!classTag.contains(e.getString("newsClassTag")) && Math.random() > 0.05 )
+                continue;
             HashMap<String,String> news = new HashMap<String,String>();
             boolean nono = false;
 
@@ -62,6 +74,25 @@ public class GetNews
         return ans;
     }
 
+    public HashMap<String,String> getDetail(String id) throws Exception {
+        URL cs = new URL(BASE_URL + "detail?newsId=" + id);
+
+        Scanner w = new Scanner(cs.openStream());
+
+        String data = "";
+        while (w.hasNextLine())
+            data = data + w.nextLine();
+
+        JSONObject jo = new JSONObject(data);
+
+        HashMap<String, String> dt = new HashMap<String, String>();
+        dt.put("news_Category", jo.getString("news_Category"));
+        dt.put("news_Content", jo.getString("news_Content"));
+        dt.put("news_URL", jo.getString("news_URL"));
+
+        return dt;
+    }
+
     public void search(String key)
     {
         searchKey = key;
@@ -81,8 +112,6 @@ public class GetNews
         for(int i=0;i<result.length();++i)
         {
             JSONObject e = result.getJSONObject(i);
-            if(!classTag.contains(e.getString("newsClassTag")))
-                break;
             HashMap<String,String> news = new HashMap<String,String>();
             boolean nono = false;
 
@@ -107,31 +136,17 @@ public class GetNews
 
     JSONArray latest(int pageSize , int pageNo) throws Exception
     {
-        URL cs = new URL(BASE_URL + String.format("latest?pageSize=%d&pageNo=%d",pageSize,pageNo));
-        Scanner w = new Scanner(cs.openStream());
-
-        String data = "";
-        while(w.hasNextLine())
-            data = data + w.nextLine();
-        try
-        {
-            JSONObject jo = new JSONObject(data);
-            JSONArray newsList  = jo.getJSONArray("list");
-
-            return newsList;
-        }
-        catch(Exception e)
-        {
-            System.out.println("["+data+"]");
-            System.out.println(pageNo);
-            return new JSONArray();
-        }
+        return urlQuest( String.format("latest?pageSize=%d&pageNo=%d",pageSize,pageNo));
     }
 
-    JSONArray find(String key,int pageSize,int pageNo)
-            throws Exception
+    JSONArray find(String key,int pageSize,int pageNo) throws Exception
     {
-        URL cs = new URL(BASE_URL + String.format("search?keyword=%s&pageSize=%d&pageNo=%d",key,pageSize,pageNo));
+        return urlQuest( String.format("search?keyword=%s&pageSize=%d&pageNo=%d",key,pageSize,pageNo));
+    }
+
+    JSONArray urlQuest(String s) throws Exception
+    {
+        URL cs = new URL(BASE_URL +s);
         Scanner w = new Scanner(cs.openStream());
 
         String data = "";
@@ -140,15 +155,13 @@ public class GetNews
         try
         {
             JSONObject jo = new JSONObject(data);
-            JSONArray newsList  = jo.getJSONArray("list");
-
-            return newsList;
+            return  jo.getJSONArray("list");
         }
         catch(Exception e)
         {
-            System.out.println("["+data+"]");
-            System.out.println(pageNo);
+            System.out.println(s);
             return new JSONArray();
         }
     }
+
 }

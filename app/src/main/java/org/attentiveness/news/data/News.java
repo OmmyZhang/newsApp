@@ -1,9 +1,17 @@
 package org.attentiveness.news.data;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
+import org.attentiveness.news.net.GetNews;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class News {
 
@@ -29,10 +37,24 @@ public class News {
     }
 
     public List<Story> getStoryList() {
-        ArrayList<Story> sL = new ArrayList<Story>(storyList);
-        sL.add(0,new Story(0,"zyn_test1"));
-        sL.add(0,new Story(1,"zyn_test2"));
-        return sL;
+        try {
+            GetNews gn = GetNews.getINSTANCE();
+
+
+            ArrayList<HashMap> list = gn.getMore();
+
+            List<Story> sL = new ArrayList<Story>();
+
+            for (HashMap e : list) {
+                sL.add(new Story(0, (String) e.get("news_Title") , (String) e.get("news_Pictures")));
+            }
+            return sL;
+        }
+        catch (Exception e)
+        {
+            System.out.print("Error: " + e);
+            return new ArrayList<Story>();
+        }
         //return storyList;
     }
 

@@ -48,7 +48,12 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
         ImageView imageView = holder.mImageView;
         TextView titleView = holder.mTitleView;
         titleView.setText(story.getTitle());
-        Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_launcher).into(imageView);
+        try {
+            Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_launcher).into(imageView);
+        }catch(Exception e) {
+            Picasso.with(holder.mImageView.getContext()).load("MoFeng").error(R.mipmap.ic_launcher).into(imageView);
+            System.out.println(imageUrl + " Img error: " + e);
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

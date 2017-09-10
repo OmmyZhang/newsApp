@@ -45,7 +45,7 @@ public class LocalStoriesDataSource implements StoriesDataSource {
             while (cursor.moveToNext()) {
                 int storyId = cursor.getInt(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_STORY_ID));
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_TITLE));
-                Story story = new Story(storyId, title);
+                Story story = new Story(storyId, title,""); // 记得修改
                 storyList.add(story);
             }
         }
