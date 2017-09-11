@@ -118,7 +118,7 @@ public class StoryListActivity extends BaseActivity {
 
     public void refresh(MenuItem it)
     {
-        addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
+        //addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
         newsListFragment.refresh_from_menu();
     }
 }

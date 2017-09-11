@@ -59,6 +59,13 @@ public class HttpManager {
                 try {
                     GetNews gn = GetNews.getINSTANCE();
                     list = gn.getMore();
+/*
+                    HashMap<String,Double> readRecord = new HashMap<String,Double>();
+                    readRecord.put("清华",100.0);
+                    readRecord.put("李克强",30.0);
+
+                    list = gn.mayLike(readRecord);
+*/
                     sL = new ArrayList<Story>();
 
                     if (list == null)

@@ -11,12 +11,18 @@ import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.data.Story;
+import org.attentiveness.news.net.GetNews;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder> {
 
@@ -38,14 +44,12 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Story story = this.mStoryList.get(position);
         List<String> imageUrlList = story.getImageList();
-        String imageUrl = null;
-        if (imageUrlList != null && imageUrlList.size() > 0) {
-            imageUrl = imageUrlList.get(0);
-        }
-        ImageView imageView = holder.mImageView;
+        final String imageUrl = story.getImage();
+
+        final ImageView imageView = holder.mImageView;
         TextView titleView = holder.mTitleView;
         TextView introView = holder.mIntroView;
         titleView.setText(story.getTitle());
@@ -53,8 +57,50 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
         while(intro.length() > 0 && (intro.charAt(0) == ' ' || intro.charAt(0) == '　'))
             intro = intro.substring(1);
         introView.setText(intro);
+
         try {
-            Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_read).into(imageView);
+            if(imageUrl.substring(0,7).equals("baidu::")) {
+                new Observable<String>() {
+                    @Override
+                    protected void subscribeActual(Observer<? super String> observer) {
+                        try {
+                            String iu = GetNews.getINSTANCE().findPicture(imageUrl.substring(7));
+                            observer.onNext(iu);
+                        } catch (Exception e) {
+                            observer.onError(e);
+                        } finally {
+                            observer.onComplete();
+                        }
+
+                    }
+                }
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<String>() {
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                System.out.println("Subscribe");
+                            }
+
+                            @Override
+                            public void onNext(String s) {
+                                Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_read).into(imageView);
+                                story.setImage(s);
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                System.out.println("baidu img: " + e);
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                System.out.println("Complete");
+                            }
+                        });
+            }
+            else
+                Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_read).into(imageView);
         }catch(Exception e) {
             Picasso.with(holder.mImageView.getContext()).load("MoFeng").error(R.mipmap.ic_search).into(imageView);
             System.out.println(imageUrl + " Img error: " + e);

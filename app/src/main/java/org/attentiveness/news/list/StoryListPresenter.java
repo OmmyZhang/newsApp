@@ -61,13 +61,13 @@ class StoryListPresenter implements StoryListContract.Presenter {
         if(!append) {
             System.out.println("INIT_GetNews");
             HashSet<String> ct = new HashSet<String>();
-//            ct.add("科技");
-//            ct.add("教育");
+            ct.add("科技");
+            ct.add("教育");
             ct.add("军事");
 //            ct.add("国内");
 //            ct.add("国际");
 //            ct.add("文化");
-            GetNews.newINSTANCE(ct , new HashSet<String>() , 200);
+            GetNews.newINSTANCE(ct , new HashSet<String>() , 150);
         }
 
         if (showLoadingUI) {
