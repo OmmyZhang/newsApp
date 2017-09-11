@@ -55,7 +55,6 @@ public class StoryListActivity extends BaseActivity {
 
         spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
         mVP.setAdapter(spa);
-
     }
 
     @Override

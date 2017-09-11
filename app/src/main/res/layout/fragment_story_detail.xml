@@ -7,14 +7,13 @@
     tools:context="org.attentiveness.news.detail.StoryDetailFragment">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/detail_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="标题"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="@android:color/black"
@@ -27,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
-            android:text="栏目"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="15sp"
             android:textStyle="italic"
@@ -37,11 +35,17 @@
             android:id="@+id/detail_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="正文"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp"
             android:typeface="serif"
             android:layout_margin="30sp"/>
+
+        <TextView
+            android:id="@+id/detail_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="31sp"/>
+
     </LinearLayout>
 
 </ScrollView>

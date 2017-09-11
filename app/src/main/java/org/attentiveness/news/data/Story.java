@@ -28,10 +28,9 @@ public class Story {
         if(!img.contains("http")) {
             imageList = new ArrayList<String>();
             firstImage = "baidu::"+title;
-            System.out.println("No picture: "+ title);
         }
         else {
-            String[] imgs = img.split(";");
+            String[] imgs = img.split(";| ");
             imageList = Arrays.asList(imgs);
             firstImage = imageList.get(0);
         }

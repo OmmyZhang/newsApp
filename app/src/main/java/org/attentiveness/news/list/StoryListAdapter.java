@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
@@ -15,6 +16,7 @@ import org.attentiveness.news.net.GetNews;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +25,7 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.OkHttpClient;
 
 class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder> {
 
@@ -50,61 +53,79 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
         final String imageUrl = story.getImage();
 
         final ImageView imageView = holder.mImageView;
-        TextView titleView = holder.mTitleView;
-        TextView introView = holder.mIntroView;
+        final TextView titleView = holder.mTitleView;
+        final TextView introView = holder.mIntroView;
         titleView.setText(story.getTitle());
         String intro = story.getIntro();
-        while(intro.length() > 0 && (intro.charAt(0) == ' ' || intro.charAt(0) == '　'))
+        while (intro.length() > 0 && (intro.charAt(0) == ' ' || intro.charAt(0) == '　'))
             intro = intro.substring(1);
         introView.setText(intro);
 
-        try {
-            if(imageUrl.substring(0,7).equals("baidu::")) {
-                new Observable<String>() {
-                    @Override
-                    protected void subscribeActual(Observer<? super String> observer) {
-                        try {
-                            String iu = GetNews.getINSTANCE().findPicture(imageUrl.substring(7));
-                            observer.onNext(iu);
-                        } catch (Exception e) {
-                            observer.onError(e);
-                        } finally {
-                            observer.onComplete();
-                        }
-
-                    }
+        Observable<String> ob = new Observable<String>() {
+            @Override
+            protected void subscribeActual(Observer<? super String> observer) {
+                try {
+                    String iu;
+                    if (imageUrl.substring(0, 7).equals("baidu::"))
+                        iu = GetNews.getINSTANCE().findPicture(imageUrl.substring(7));
+                    else
+                        iu = imageUrl;
+                    observer.onNext(iu);
+                } catch (Exception e) {
+                    observer.onError(e);
+                } finally {
+                    observer.onComplete();
                 }
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<String>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                System.out.println("Subscribe");
-                            }
 
-                            @Override
-                            public void onNext(String s) {
-                                Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_read).into(imageView);
-                                story.setImage(s);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                System.out.println("baidu img: " + e);
-                            }
-
-                            @Override
-                            public void onComplete() {
-                                System.out.println("Complete");
-                            }
-                        });
             }
-            else
-                Picasso.with(holder.mImageView.getContext()).load(imageUrl).error(R.mipmap.ic_read).into(imageView);
-        }catch(Exception e) {
-            Picasso.with(holder.mImageView.getContext()).load("MoFeng").error(R.mipmap.ic_search).into(imageView);
-            System.out.println(imageUrl + " Img error: " + e);
-        }
+        };
+        ob.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    private String s2 = "mf", s1 = "mf";
+
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        if (s.substring(0, 5).equals("baidu")) {
+                            s1 = s.split(";")[1];
+                            s2 = s.split(";")[2];
+                        } else
+                            s1 = s;
+                        Picasso.with(holder.mImageView.getContext())
+                                .load(s1).placeholder(R.drawable.ic_image_black_24dp)
+                                .into(imageView, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Picasso.with(holder.mImageView.getContext())
+                                                .load(s2)
+                                                .placeholder(R.drawable.ic_image_black_24dp)
+                                                .error(R.drawable.ic_broken_image_black_24dp)
+                                                .into(imageView);
+
+                                    }
+                                });
+                        story.setImage(s);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("baidu img: " + e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,6 +134,7 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
                 }
             }
         });
+
     }
 
     @Override
