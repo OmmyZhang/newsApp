@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.data.Story;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

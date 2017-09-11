@@ -1,31 +1,24 @@
 package org.attentiveness.news.detail;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
-import org.attentiveness.news.data.StoryDetail;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
 import org.attentiveness.news.list.StoryListFragment;
-import org.attentiveness.news.splash.SplashActivity;
 
 import java.util.Locale;
 
 import butterknife.BindDrawable;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StoryDetailActivity extends BaseActivity {
@@ -127,5 +120,12 @@ public class StoryDetailActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         readTTS.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (readTTS != null)
+            readTTS.shutdown();
     }
 }

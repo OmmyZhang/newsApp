@@ -7,11 +7,9 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
@@ -30,6 +28,7 @@ public class StoryListActivity extends BaseActivity {
     private SlidePagerAdapter spa;
     private ArrayList<Fragment> fList;
     private  StoryListFragment newsListFragment;
+    YouMayLikeFragment newMayLikeFragement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +44,8 @@ public class StoryListActivity extends BaseActivity {
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         StoryListPresenter newListPresenter= new StoryListPresenter(repository, newsListFragment);
 
-        YouMayLikeFragment newMayLikeFragement = YouMayLikeFragment.newInstance();
+
+        newMayLikeFragement = YouMayLikeFragment.newInstance();
 
         mVP = (ViewPager) findViewById(R.id.vpg);
 
@@ -118,6 +118,7 @@ public class StoryListActivity extends BaseActivity {
 
     public void refresh(MenuItem it)
     {
+        addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
         newsListFragment.refresh_from_menu();
     }
 }
