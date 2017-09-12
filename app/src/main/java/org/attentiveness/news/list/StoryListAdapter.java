@@ -105,6 +105,8 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
 
                                     @Override
                                     public void onError() {
+                                        if(s2.equals("mf"))
+                                            story.setImage("baidu::"+story.getTitle());
                                         Picasso.with(holder.mImageView.getContext())
                                                 .load(s2)
                                                 .placeholder(R.drawable.ic_image_black_24dp)
