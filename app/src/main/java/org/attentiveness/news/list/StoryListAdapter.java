@@ -47,7 +47,7 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Story story = this.mStoryList.get(position);
         List<String> imageUrlList = story.getImageList();
         final String imageUrl = story.getImage();
@@ -96,26 +96,29 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
                         } else
                             s1 = s;
                         Picasso.with(holder.mImageView.getContext())
-                                .load(s1).placeholder(R.drawable.ic_image_black_24dp)
+                                .load(s1)
+                                .placeholder(R.drawable.ic_image_black_24dp)
                                 .into(imageView, new Callback() {
                                     @Override
                                     public void onSuccess() {
-
+                                        story.setImage(s1);
                                     }
 
                                     @Override
                                     public void onError() {
-                                        if(s2.equals("mf"))
-                                            story.setImage("baidu::"+story.getTitle());
-                                        Picasso.with(holder.mImageView.getContext())
-                                                .load(s2)
-                                                .placeholder(R.drawable.ic_image_black_24dp)
-                                                .error(R.drawable.ic_broken_image_black_24dp)
-                                                .into(imageView);
-
+                                        if (s2.equals("mf")) {
+                                            story.setImage("baidu::" + story.getTitle());
+                                            onBindViewHolder(holder, position);
+                                        } else {
+                                            story.setImage(s2);
+                                            Picasso.with(holder.mImageView.getContext())
+                                                    .load(s2)
+                                                    .placeholder(R.drawable.ic_image_black_24dp)
+                                                    .error(R.drawable.ic_broken_image_black_24dp)
+                                                    .into(imageView);
+                                        }
                                     }
                                 });
-                        story.setImage(s);
                     }
 
                     @Override

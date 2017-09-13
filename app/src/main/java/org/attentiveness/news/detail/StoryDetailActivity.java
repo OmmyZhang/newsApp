@@ -26,6 +26,7 @@ public class StoryDetailActivity extends BaseActivity {
     private static final String INSTANCE_STORY_ID = "story_id";
 
     private String mStoryId;
+    private String mStoryImg;
     TextToSpeech readTTS;
 
     private MenuItem it_fav;
@@ -49,6 +50,7 @@ public class StoryDetailActivity extends BaseActivity {
 
         if (savedInstanceState == null) {
             this.mStoryId = getIntent().getStringExtra(StoryListFragment.EXTRA_ID);
+            this.mStoryImg = getIntent().getStringExtra(StoryListFragment.EXTRA_IMG);
         } else {
             this.mStoryId = savedInstanceState.getString(INSTANCE_STORY_ID);
         }
@@ -61,6 +63,9 @@ public class StoryDetailActivity extends BaseActivity {
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         StoryDetailPresenter presenter = new StoryDetailPresenter(this.mStoryId, repository, mStoryDetailFragment);
+
+        mStoryDetailFragment.setImg(mStoryImg);
+        mStoryDetailFragment.setContext(this);
 
         readTTS = new TextToSpeech(StoryDetailActivity.this, new TextToSpeech.OnInitListener() {
             @Override
@@ -99,11 +104,12 @@ public class StoryDetailActivity extends BaseActivity {
     }
     public void share(MenuItem it) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Title");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "www.baidu.com");
+        sharingIntent.setType("image/*");
+        sharingIntent.putExtra(Intent.EXTRA_TITLE,mStoryDetailFragment.getTitle());
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, mStoryDetailFragment.shareText());
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, "");
 
-        startActivity(Intent.createChooser(sharingIntent, "分享新闻到"));
+        startActivity(Intent.createChooser(sharingIntent, "分享新闻到.."));
     }
 
     public void fav(MenuItem it) {
