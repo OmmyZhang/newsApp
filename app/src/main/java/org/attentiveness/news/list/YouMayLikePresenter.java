@@ -51,16 +51,6 @@ public class YouMayLikePresenter extends StoryListPresenter {
     }
 
     private void loadNewsList(boolean forceUpdate, final boolean showLoadingUI, final boolean append) {
-        if (!append){
-            HashSet<String> ct = new HashSet<>();
-            ct.add("科技");
-            ct.add("教育");
-            ct.add("军事");
-//            ct.add("国内");
-//            ct.add("国际");
-//            ct.add("文化");
-            GetNews.newINSTANCE(ct, new HashSet<String>(), 20);
-        }
         if (showLoadingUI) {
             this.mNewsListView.setLoadingIndicator(true);
         }

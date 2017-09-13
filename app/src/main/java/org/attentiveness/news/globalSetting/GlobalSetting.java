@@ -25,6 +25,8 @@ public class GlobalSetting {
     private GlobalSetting()
     {
         readRecord = new HashMap<String,Double>();
+        readRecord.put("澳洲",100.0);
+        readRecord.put("李克强",100.0);
 
     }
 
