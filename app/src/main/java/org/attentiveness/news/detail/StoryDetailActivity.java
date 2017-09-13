@@ -72,6 +72,8 @@ public class StoryDetailActivity extends BaseActivity {
         });
 
         fav_ed = false; // 这里应该检查是否已经被收藏了
+
+        setTitle("新闻详情");
     }
 
     @Override

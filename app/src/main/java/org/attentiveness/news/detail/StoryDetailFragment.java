@@ -19,6 +19,7 @@ import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.StoryDetail;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +53,11 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
     public String getText() {
         return titleText.getText() + "。 " + contentText.getText();
     }
+
+    public String getTitle(){
+        return titleText.getText() + "";
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -99,18 +105,23 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
 
         String content = storyDetail.getContent();
 
-        content = content.replaceAll("  ","　").replaceAll("　　","　").replaceAll("　","\n　　");
-        while(content.charAt(0) == '\n') {
+        content = content.replaceAll("  ", "　").replaceAll("　　", "　").replaceAll("　", "\n　　");
+        while (content.charAt(0) == '\n') {
             content = content.substring(1);
         }
-        if(content.charAt(0) != '　')
+        if (content.charAt(0) != '　')
             content = "　　" + content;
 
         titleText.setText(storyDetail.getTitle());
         categoryText.setText(storyDetail.getCategory());
-        contentText.setText(content);
+
         urlText.setAutoLinkMask(Linkify.ALL);
-        urlText.setText("原文地址 "+storyDetail.getUrl());
+        urlText.setText("原文地址 " + storyDetail.getUrl());
+
+        contentText.setText(content);
+        Pattern words = storyDetail.getNames();
+        Linkify.addLinks(contentText, words, "https://baike.baidu.com/item/");
+
     }
 
     @Override
