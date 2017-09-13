@@ -42,17 +42,12 @@ public class LocalStoriesDataSource implements StoriesDataSource {
                 StoriesPersistenceContract.StoryEntry.COLUMN_NAME_TITLE};
         Cursor cursor = database.query(StoriesPersistenceContract.StoryEntry.TABLE_NAME, projections, null, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
-<<<<<<< HEAD
-            /*while (cursor.moveToNext()) {
-                int storyId = cursor.getInt(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_STORY_ID));
-=======
             while (cursor.moveToNext()) {
                 String storyId = cursor.getString(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_STORY_ID));
->>>>>>> testTTS
                 String title = cursor.getString(cursor.getColumnIndexOrThrow(StoriesPersistenceContract.StoryEntry.COLUMN_NAME_TITLE));
                 Story story = new Story(storyId, title,"",""); // 记得修改
                 storyList.add(story);
-            }*/
+            }
         }
         if (cursor != null) {
             cursor.close();

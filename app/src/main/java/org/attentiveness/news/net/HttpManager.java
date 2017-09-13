@@ -22,10 +22,6 @@ import io.reactivex.Observer;
  */
 public class HttpManager {
 
-<<<<<<< HEAD
-    //private static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
-=======
->>>>>>> testTTS
     private static final String BASE_URL = "http://166.111.68.66:2042/news/action/query/";
 
     private static HttpManager INSTANCE = null;
@@ -55,11 +51,8 @@ public class HttpManager {
                 }
             });
         }
-<<<<<<< HEAD
-        return  this.mStoryService.getStories(1, 10, 1).map(new Function<News, List<Story>>() {
-=======
+
         return new Observable<List<Story>>() {
->>>>>>> testTTS
             @Override
             protected void subscribeActual(Observer<? super List<Story>> observer) {
                 List<HashMap> list;
@@ -98,24 +91,12 @@ public class HttpManager {
                     observer.onComplete();
                 }
             }
-<<<<<<< HEAD
-        });
-        /*return this.mStoryService.getStoryList(date).map(new Function<News, List<Story>>() {
-            @Override
-            public List<Story> apply(@NonNull News news) throws Exception {
-                return news.getStoryList();
-            }
-        });*/
-    }
 
-    public Observable<StoryDetail> getStory(String storyId) {
-=======
         };
 
     }
 
     public Observable<StoryDetail> getStory(final String sId) {
->>>>>>> testTTS
         if (!this.isConnected()) {
             return Observable.error(new Callable<Throwable>() {
                 @Override
