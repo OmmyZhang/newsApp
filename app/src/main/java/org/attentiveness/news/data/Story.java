@@ -1,8 +1,5 @@
 package org.attentiveness.news.data;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,6 +46,8 @@ public class Story {
     public String getIntro(){
         return intro;
     }
+
+    public void setIntro(String intro) { this.intro = intro; }
 
     public List<String> getImageList() {
         return imageList;

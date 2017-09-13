@@ -1,12 +1,15 @@
 package org.attentiveness.news.list;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,7 +30,8 @@ public class StoryListActivity extends BaseActivity {
     private ViewPager mVP;
     private SlidePagerAdapter spa;
     private ArrayList<Fragment> fList;
-    private  StoryListFragment newsListFragment;
+    private StoryListFragment newsListFragment;
+    private SearchView mSearchView;
     YouMayLikeFragment newMayLikeFragement;
 
     @Override
@@ -55,13 +59,28 @@ public class StoryListActivity extends BaseActivity {
 
         spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
         mVP.setAdapter(spa);
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+        final MenuItem item = menu.findItem(R.id.edit_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(item);
+        this.mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(StoryListActivity.this, SearchActivity.class);
+                intent.putExtra("key_word", query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
@@ -116,9 +135,7 @@ public class StoryListActivity extends BaseActivity {
         });
     }
 
-    public void refresh(MenuItem it)
-    {
-        addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
+    public void refresh(MenuItem it) {
         newsListFragment.refresh_from_menu();
     }
 }
