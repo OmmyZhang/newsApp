@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -72,6 +71,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         if (bundle != null && bundle.containsKey(EXTRA_DATE)) {
             this.mOriginalDate = bundle.getString(EXTRA_DATE);
         }
+
     }
 
     @Override
@@ -112,6 +112,8 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
                 mPresenter.loadNewsList(mDate, false, false);
             }
         });
+
+
 
         setHasOptionsMenu(true);
         return rootView;

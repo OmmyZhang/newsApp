@@ -56,6 +56,8 @@ public class Story {
         return intro;
     }
 
+    public void setIntro(String intro) { this.intro = intro; }
+
     public List<String> getImageList() {
         return imageList;
     }
