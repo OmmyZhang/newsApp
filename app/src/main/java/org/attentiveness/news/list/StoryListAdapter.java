@@ -1,5 +1,8 @@
 package org.attentiveness.news.list;
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.data.Story;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.net.GetNews;
 
 import java.util.ArrayList;
@@ -55,6 +59,7 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
         final TextView titleView = holder.mTitleView;
         final TextView introView = holder.mIntroView;
         titleView.setText(story.getTitle());
+
         String intro = story.getIntro();
         while (intro.length() > 0 && (intro.charAt(0) == ' ' || intro.charAt(0) == '　'))
             intro = intro.substring(1);
@@ -130,9 +135,24 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
                     }
                 });
 
+        if(GlobalSetting.getINSTANCE().ifRead(story.getId()))
+        {
+            holder.mTitleView.setTextColor(Color.GRAY);
+            holder.mIntroView.setTextColor(Color.LTGRAY);
+            holder.mImageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.LIGHTEN);
+        }
+        else {
+            titleView.setTextColor(Color.DKGRAY);
+            introView.setTextColor(Color.DKGRAY);
+            imageView.clearColorFilter();
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.mTitleView.setTextColor(Color.GRAY);
+                holder.mIntroView.setTextColor(Color.LTGRAY);
+                holder.mImageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.LIGHTEN);
+                GlobalSetting.getINSTANCE().readIt(story.getId());
                 if (mOnItemClickListener != null) {
                     mOnItemClickListener.onStoryClicked(story);
                 }

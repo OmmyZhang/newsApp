@@ -1,6 +1,7 @@
 package org.attentiveness.news.globalSetting;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,12 +23,25 @@ public class GlobalSetting {
     private Set<String> notShow;
     private Set<String> interestedClass;
 
+    private Set<String> readToday;
+
     private GlobalSetting()
     {
         readRecord = new HashMap<String,Double>();
         readRecord.put("澳洲",100.0);
         readRecord.put("李克强",100.0);
 
+        readToday = new HashSet<String>();
+    }
+
+    public boolean ifRead(String id)
+    {
+        return readToday.contains(id);
+    }
+
+    public void readIt(String id)
+    {
+        readToday.add(id);
     }
 
     public static GlobalSetting getINSTANCE()
