@@ -1,6 +1,8 @@
 package org.attentiveness.news.list;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -50,7 +53,6 @@ public class StoryListActivity extends BaseActivity {
 
 
         newMayLikeFragement = YouMayLikeFragment.newInstance();
-
 
         mVP = (ViewPager) findViewById(R.id.vpg);
 
@@ -146,6 +148,42 @@ public class StoryListActivity extends BaseActivity {
         });
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (!mSearchView.isIconified()) {
+                mSearchView.onActionViewCollapsed();
+                System.out.println("back successfully");
+            }
+            else if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+            else if (this.getClass() == StoryListActivity.class)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("");
+                builder.setMessage("确认退出吗>.<");
+                builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                builder.setNegativeButton("再看一会儿吧", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
+            else {
+                finish();
+            }
+        }
+        return false;
+    }
 
     public void refresh(MenuItem it)
     {
