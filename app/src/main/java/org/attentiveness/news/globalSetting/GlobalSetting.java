@@ -53,16 +53,14 @@ public class GlobalSetting {
         readToday.add(id);
     }
 
-    public static GlobalSetting getINSTANCE()
-    {
+    public static GlobalSetting getINSTANCE() {
         if(INSTANCE == null)
             INSTANCE = new GlobalSetting();
         return INSTANCE;
     }
 
-    public static  void setINSTANCE(GlobalSetting load)
-    {
-        INSTANCE = load;
+    public static void setINSTANCE(GlobalSetting loader) {
+        INSTANCE = loader;
     }
 
     public boolean isAllowOtherClass(){

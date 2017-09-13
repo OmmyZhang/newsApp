@@ -1,20 +1,18 @@
 package org.attentiveness.news.data;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class StoryDetail {
 
-    private String content, category, url, title, segList;
+    private String newsId, content, category, url, title, segList;
 
     public StoryDetail() {
 
     }
 
-    public StoryDetail(String title, String category, String content, String url, String segList) {
+    public StoryDetail(String newsId, String title, String category, String content, String url, String segList) {
+        this.newsId = newsId;
         this.title = title;
         this.category = category;
         this.content = content;
@@ -22,8 +20,8 @@ public class StoryDetail {
         this.segList = segList;
     }
 
-    public int getId() {
-        return 0;
+    public String getId() {
+        return newsId;
     }
 
     public String getContent() {
