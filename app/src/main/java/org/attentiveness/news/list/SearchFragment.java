@@ -67,6 +67,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
                 mPresenter.loadNewsList("", false, true);
             }
         };
+        mPresenter.loadNewsList("", false, true);
 
         setHasOptionsMenu(true);
         return rootView;
@@ -81,27 +82,64 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
     @Override
     public void showStoryList(List<Story> storyList) {
         this.mSearchListView.setVisibility(View.VISIBLE);
-        GetNews.getINSTANCE().search(mKeyWord);
-        ArrayList<HashMap> stories = new ArrayList<HashMap>();
-        try {
-            stories = GetNews.getINSTANCE().searchMore();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        final ArrayList<HashMap>[] stories = new ArrayList[]{new ArrayList<HashMap>()};
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GetNews.getINSTANCE().search(mKeyWord);
+                    stories[0] = GetNews.getINSTANCE().searchMore();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
         List<Story> list = null;
-        for (HashMap item : stories) {
+        for (HashMap item : stories[0]) {
             list.add(new Story((String) item.get("news_ID"),
                     (String) item.get("news_Title"),
                     (String) item.get("news_Pictures"),
                     (String) item.get("news_Intro")));
         }
+        System.out.println("story_list_size: "+list.size());
         this.mStoriesAdapter.setItemList(list);
     }
 
     @Override
     public void appendStoryList(List<Story> storyList) {
         this.mSearchListView.setVisibility(View.VISIBLE);
-        this.mStoriesAdapter.addItemList(storyList);
+
+        final List<Story> list = new ArrayList<>();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    ArrayList<HashMap> stories = new ArrayList<>();
+                    GetNews.getINSTANCE().search(mKeyWord);
+                    System.out.println(mKeyWord);
+                    stories = GetNews.getINSTANCE().searchMore();
+                    System.out.println("stories_size: "+stories.size());
+                    for (HashMap item : stories) {
+                        list.add(new Story((String) item.get("news_ID"),
+                                (String) item.get("news_Title"),
+                                (String) item.get("news_Pictures"),
+                                (String) item.get("news_Intro")));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("story_list_size: "+list.size());
+        this.mStoriesAdapter.setItemList(list);
     }
 
     @Override

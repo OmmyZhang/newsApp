@@ -7,6 +7,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.attentiveness.news.R;
+import org.attentiveness.news.data.source.StoriesDataRepository;
+import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
+import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
 
 import butterknife.ButterKnife;
 
@@ -28,12 +31,15 @@ public class SearchActivity extends StoryListActivity {
         PagerTabStrip pagerTabStrip = (PagerTabStrip)findViewById(R.id.vpg_title);
         pagerTabStrip.setVisibility(View.INVISIBLE);
 
-        mSearchFragment = SearchFragment.newInstance(keyWord);
-        addFragment(getSupportFragmentManager(), R.id.vpg_container, mSearchFragment);
-
         Intent intent = getIntent();
         keyWord = intent.getStringExtra("key_word");
-        System.out.println(keyWord);
+        mSearchFragment = SearchFragment.newInstance(keyWord);
+        StoriesDataRepository repository = StoriesDataRepository.getInstance(
+                RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
+        StoryListPresenter storyListPresenter = new StoryListPresenter(repository, mSearchFragment);
+
+        addFragment(getSupportFragmentManager(), R.id.vpg_container, mSearchFragment);
+
     }
 
     @Override

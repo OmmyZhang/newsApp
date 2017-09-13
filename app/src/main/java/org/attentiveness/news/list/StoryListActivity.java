@@ -3,7 +3,6 @@ package org.attentiveness.news.list;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -14,7 +13,6 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
@@ -84,6 +82,16 @@ public class StoryListActivity extends BaseActivity {
                 return false;
             }
         });
+        final MenuItem mode = menu.findItem(R.id.night_mode);
+        mode.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                menuItem.setChecked(!menuItem.isChecked());
+                return false;
+            }
+        });
+        boolean modef = !mode.isChecked();
+        //SkinManager.getInstance().changeSkin(modef ? "night" : "");
         return true;
     }
 
