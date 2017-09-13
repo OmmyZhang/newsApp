@@ -115,7 +115,7 @@ public class YouMayLikePresenter extends StoryListPresenter {
 
                     @Override
                     public void onComplete() {
-
+                        mNewsListView.setLoadingIndicator(false);
                     }
                 });
     }
