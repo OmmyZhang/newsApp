@@ -1,18 +1,22 @@
 package org.attentiveness.news.list;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+<<<<<<< HEAD
 import android.support.v4.view.PagerTabStrip;
+=======
+import android.support.v4.view.MenuItemCompat;
+>>>>>>> b406e30a6a0b720526c650047583cc302dc97f59
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
@@ -31,6 +35,9 @@ public class StoryListActivity extends BaseActivity {
     private PagerTabStrip mPTS;
     private SlidePagerAdapter spa;
     private ArrayList<Fragment> fList;
+    private StoryListFragment newsListFragment;
+    private SearchView mSearchView;
+    YouMayLikeFragment newMayLikeFragement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,13 +47,14 @@ public class StoryListActivity extends BaseActivity {
         setup(R.drawable.ic_menu);
 
         String today = DateUtil.getToday();
-        StoryListFragment newsListFragment = StoryListFragment.newInstance(today);
+        newsListFragment = StoryListFragment.newInstance(today);
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
-        new StoryListPresenter(repository, newsListFragment);
+        StoryListPresenter newListPresenter= new StoryListPresenter(repository, newsListFragment);
 
-        YouMayLikeFragment newMayLikeFragement = YouMayLikeFragment.newInstance();
+
+        newMayLikeFragement = YouMayLikeFragment.newInstance();
 
         mVP = (ViewPager) findViewById(R.id.vpg);
         mPTS = (PagerTabStrip) findViewById(R.id.vpg_title);
@@ -57,13 +65,28 @@ public class StoryListActivity extends BaseActivity {
 
         spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
         mVP.setAdapter(spa);
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+        final MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+        final MenuItem item = menu.findItem(R.id.edit_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(item);
+        this.mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(StoryListActivity.this, SearchActivity.class);
+                intent.putExtra("key_word", query);
+                startActivity(intent);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
@@ -118,4 +141,10 @@ public class StoryListActivity extends BaseActivity {
         });
     }
 
+
+    public void refresh(MenuItem it)
+    {
+        //addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
+        newsListFragment.refresh_from_menu();
+    }
 }

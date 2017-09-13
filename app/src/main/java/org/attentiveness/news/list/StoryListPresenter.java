@@ -4,10 +4,12 @@ import android.support.annotation.NonNull;
 
 import org.attentiveness.news.data.Story;
 import org.attentiveness.news.data.source.StoriesDataRepository;
+import org.attentiveness.news.net.GetNews;
 import org.attentiveness.news.util.DateUtil;
 import org.attentiveness.news.util.schedulers.BaseSchedulerProvider;
 import org.attentiveness.news.util.schedulers.SchedulerProvider;
 
+import java.util.HashSet;
 import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -53,7 +55,21 @@ class StoryListPresenter implements StoryListContract.Presenter {
     }
 
     private void loadNewsList(@NonNull String date, boolean forceUpdate, final boolean showLoadingUI, final boolean append) {
-        System.out.println("LOAD: "+ date +"|"+ forceUpdate +"|"+ showLoadingUI +"|"+ append);
+
+        System.out.println(String.format("LOAD:: %s %b %b %b",date,forceUpdate,showLoadingUI,append));
+
+        if(!append) {
+            System.out.println("INIT_GetNews");
+            HashSet<String> ct = new HashSet<String>();
+            ct.add("科技");
+            ct.add("教育");
+            ct.add("军事");
+//            ct.add("国内");
+//            ct.add("国际");
+//            ct.add("文化");
+            GetNews.newINSTANCE(ct , new HashSet<String>() , 150);
+        }
+
         if (showLoadingUI) {
             this.mNewsListView.setLoadingIndicator(true);
         }

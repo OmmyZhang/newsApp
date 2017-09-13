@@ -25,7 +25,7 @@ public class StoriesDataRepository implements StoriesDataSource {
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    private Map<Integer, Story> mCachedStories;
+    private Map<String, Story> mCachedStories;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -80,7 +80,7 @@ public class StoriesDataRepository implements StoriesDataSource {
      * @return Observable wraps story detail.
      */
     @Override
-    public Observable<StoryDetail> getStoryDetail(int storyId) {
+    public Observable<StoryDetail> getStoryDetail(String storyId) {
         return this.mStoriesRemoteDataSource.getStoryDetail(storyId);
     }
 
@@ -131,7 +131,8 @@ public class StoriesDataRepository implements StoriesDataSource {
     }
 
     private Observable<List<Story>> getAndSaveStoryListFromLocal(String date) {
-        return this.mStoriesLocalDataSource.getStories(date).doOnNext(new Consumer<List<Story>>() {
+        return this.mStoriesLocalDataSource.getStories(date)
+                .doOnNext(new Consumer<List<Story>>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull List<Story> storyList) throws Exception {
                 for (Story story : storyList) {

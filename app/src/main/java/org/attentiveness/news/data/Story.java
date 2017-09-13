@@ -2,30 +2,45 @@ package org.attentiveness.news.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.attentiveness.news.net.GetNews;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Story {
 
-    private int id;
+    private String id;
     private String title;
+    private String intro;
 
-    @SerializedName("images")
     private List<String> imageList;
+    private String firstImage;
 
     public Story() {
 
     }
 
-    public Story(int id, String title) {
+    public Story(String id, String title,String img,String intro) {
         this.id = id;
         this.title = title;
+        this.intro = intro;
+        if(!img.contains("http")) {
+            imageList = new ArrayList<String>();
+            firstImage = "baidu::"+title;
+        }
+        else {
+            String[] imgs = img.split(";| ");
+            imageList = Arrays.asList(imgs);
+            firstImage = imageList.get(0);
+        }
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,11 +52,21 @@ public class Story {
         this.title = title;
     }
 
+    public String getIntro(){
+        return intro;
+    }
+
+    public void setIntro(String intro) { this.intro = intro; }
+
     public List<String> getImageList() {
         return imageList;
     }
 
-    public void setImageList(List<String> imageList) {
-        this.imageList = imageList;
+    public  String getImage(){
+        return firstImage;
+    }
+
+    public void setImage(String img) {
+        this.firstImage = img;
     }
 }

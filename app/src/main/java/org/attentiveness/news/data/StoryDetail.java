@@ -3,40 +3,27 @@ package org.attentiveness.news.data;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StoryDetail {
 
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("body")
-    private String content;
-
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("image")
-    private String imageUrl;
-
-    @SerializedName("image_source")
-    private String imageSource;
-
-    @SerializedName("js")
-    private List<String> jsList;
-
-    @SerializedName("css")
-    private List<String> cssList;
+    private String content, category, url, title, segList;
 
     public StoryDetail() {
 
     }
 
-    public int getId() {
-        return id;
+    public StoryDetail(String title, String category, String content, String url, String segList) {
+        this.title = title;
+        this.category = category;
+        this.content = content;
+        this.url = url;
+        this.segList = segList;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public int getId() {
+        return 0;
     }
 
     public String getContent() {
@@ -51,39 +38,27 @@ public class StoryDetail {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getCategory() {
+        return category;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+    public Pattern getNames() {
+        String ss = "";
+        Pattern name = Pattern.compile("([^\\s]*)/(LOC|PER)");
+        Matcher m = name.matcher(segList);
+        while (m.find())
+            ss = ss + "|" + m.group(1);
 
-    public String getImageSource() {
-        return imageSource;
-    }
 
-    public void setImageSource(String imageSource) {
-        this.imageSource = imageSource;
-    }
+        //System.out.println("rex: " + ss.substring(1));
 
-    public List<String> getJsList() {
-        return jsList;
-    }
-
-    public void setJsList(List<String> jsList) {
-        this.jsList = jsList;
-    }
-
-    public List<String> getCssList() {
-        return cssList;
-    }
-
-    public void setCssList(List<String> cssList) {
-        this.cssList = cssList;
+        if (ss.length() > 0)
+            return Pattern.compile(ss.substring(1));
+        else
+            return Pattern.compile("NoNoNo");
     }
 }

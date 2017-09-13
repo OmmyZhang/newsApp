@@ -5,18 +5,21 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.StoryDetail;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,8 +31,14 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
 
     @BindView(R.id.fl_root_view)
     FrameLayout mRootView;
-    @BindView(R.id.wv_view)
-    WebView mWebView;
+    @BindView(R.id.detail_content)
+    TextView contentText;
+    @BindView(R.id.detail_title)
+    TextView titleText;
+    @BindView(R.id.detail_category)
+    TextView categoryText;
+    @BindView(R.id.detail_url)
+    TextView urlText;
 
     private StoryDetailContract.Presenter mPresenter;
 
@@ -41,19 +50,23 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         // Required empty public constructor
     }
 
+    public String getText() {
+        return titleText.getText() + "。 " + contentText.getText();
+    }
+
+    public String getTitle(){
+        return titleText.getText() + "";
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_story_detail, container, false);
         ButterKnife.bind(this, view);
-
-        WebSettings webSettings = this.mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
         setHasOptionsMenu(true);
         return view;
     }
@@ -82,32 +95,33 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
 
     @Override
     public void showStoryDetail(StoryDetail storyDetail) {
+        System.out.println("Show Detail");
         if (!this.isActive() || getView() == null) {
             return;
         }
         if (storyDetail == null) {
             return;
         }
-        String body = storyDetail.getContent();
-        List<String> jsArray = storyDetail.getJsList();
-        if (jsArray != null && jsArray.size() > 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int index = 0; index < jsArray.size(); index++) {
-                String jsLink = "<script type=\"text/javascript\" src=\"" + jsArray.get(index) + "\"></script>";
-                stringBuilder.append(jsLink);
-            }
-            body = stringBuilder.toString() + body;
+
+        String content = storyDetail.getContent();
+
+        content = content.replaceAll("  ", "　").replaceAll("　　", "　").replaceAll("　", "\n　　");
+        while (content.charAt(0) == '\n') {
+            content = content.substring(1);
         }
-        List<String> cssArray = storyDetail.getCssList();
-        if (cssArray != null && cssArray.size() > 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            for (int index = 0; index < cssArray.size(); index++) {
-                String cssLink = "<link rel=\"stylesheet\" type=\"text/css\" href=\"" + cssArray.get(index) + "\" />";
-                stringBuilder.append(cssLink);
-            }
-            body = stringBuilder.toString() + body;
-        }
-        this.mWebView.loadData(body, "text/html; charset=UTF-8", null);
+        if (content.charAt(0) != '　')
+            content = "　　" + content;
+
+        titleText.setText(storyDetail.getTitle());
+        categoryText.setText(storyDetail.getCategory());
+
+        urlText.setAutoLinkMask(Linkify.ALL);
+        urlText.setText("原文地址 " + storyDetail.getUrl());
+
+        contentText.setText(content);
+        Pattern words = storyDetail.getNames();
+        Linkify.addLinks(contentText, words, "https://baike.baidu.com/item/");
+
     }
 
     @Override

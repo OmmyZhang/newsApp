@@ -48,6 +48,8 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
     private String mDate;
     private int mLoadingCount;
 
+    private boolean needRefresh = true;
+
     public static StoryListFragment newInstance(String date) {
         StoryListFragment storyListFragment = new StoryListFragment();
         Bundle bundle = new Bundle();
@@ -69,6 +71,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         if (bundle != null && bundle.containsKey(EXTRA_DATE)) {
             this.mOriginalDate = bundle.getString(EXTRA_DATE);
         }
+
     }
 
     @Override
@@ -105,9 +108,12 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
             public void onRefresh() {
                 mLoadingCount = 0;
                 mDate = mOriginalDate;
+                mLoadMoreListener.refreshed();
                 mPresenter.loadNewsList(mDate, false, false);
             }
         });
+
+
 
         setHasOptionsMenu(true);
         return rootView;
@@ -121,7 +127,10 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
     @Override
     public void onResume() {
         super.onResume();
-        this.mPresenter.subscribe();
+        if(needRefresh) {
+            this.mPresenter.subscribe();
+            needRefresh = false;
+        }
         this.mStoriesView.addOnScrollListener(this.mLoadMoreListener);
     }
 
@@ -186,7 +195,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
 
     @Override
     public void onStoryClicked(Story story) {
-        if (story != null && story.getId() > 0) {
+        if (story != null && !story.getId().equals("")) {
             Intent intent = new Intent(this.getActivity(), StoryDetailActivity.class);
             intent.putExtra(EXTRA_ID, story.getId());
             startActivity(intent);
@@ -200,4 +209,8 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         this.mPresenter.loadNewsList(this.mDate, true, false);
     }
 
+    void refresh_from_menu() {
+        mLoadMoreListener.refreshed();
+        mPresenter.loadNewsList(mDate, false, false);
+    }
 }
