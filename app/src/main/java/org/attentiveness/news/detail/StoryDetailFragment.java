@@ -2,6 +2,7 @@ package org.attentiveness.news.detail;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +13,17 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.StoryDetail;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +43,11 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
     TextView categoryText;
     @BindView(R.id.detail_url)
     TextView urlText;
+    @BindView(R.id.detail_img)
+    ImageView detailImage;
+
+    private String mStoryImg;
+    private Context mContext;
 
     private StoryDetailContract.Presenter mPresenter;
 
@@ -49,9 +59,27 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         // Required empty public constructor
     }
 
+    public void setImg(String s)
+    {
+        mStoryImg = s;
+    }
+    public void setContext(Context c)
+    {
+        mContext = c;
+    }
+
     public String getText() {
         return titleText.getText() + "。 " + contentText.getText();
     }
+
+    public String getTitle(){
+        return titleText.getText() + "";
+    }
+
+    public String shareText() {
+        return titleText.getText() + "\n" + contentText.getText() + "\n" + urlText.getText();
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -89,7 +117,6 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
 
     @Override
     public void showStoryDetail(StoryDetail storyDetail) {
-        System.out.println("Show Detail");
         if (!this.isActive() || getView() == null) {
             return;
         }
@@ -99,18 +126,29 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
 
         String content = storyDetail.getContent();
 
-        content = content.replaceAll("  ","　").replaceAll("　　","　").replaceAll("　","\n　　");
-        while(content.charAt(0) == '\n') {
+        content = content.replaceAll("  ", "　").replaceAll("　　", "　").replaceAll("　", "\n　　");
+        while (content.charAt(0) == '\n') {
             content = content.substring(1);
         }
-        if(content.charAt(0) != '　')
+        if (content.charAt(0) != '　')
             content = "　　" + content;
+
+        Picasso.with(mContext)
+                .load(mStoryImg)
+                .placeholder(R.drawable.ic_image_black_24dp)
+                .error(R.drawable.ic_broken_image_black_24dp)
+                .into(detailImage);
 
         titleText.setText(storyDetail.getTitle());
         categoryText.setText(storyDetail.getCategory());
-        contentText.setText(content);
+
         urlText.setAutoLinkMask(Linkify.ALL);
-        urlText.setText("原文地址 "+storyDetail.getUrl());
+        urlText.setText("原文地址 " + storyDetail.getUrl());
+
+        contentText.setText(content);
+        Pattern words = storyDetail.getNames();
+        Linkify.addLinks(contentText, words, "https://baike.baidu.com/item/");
+
     }
 
     @Override

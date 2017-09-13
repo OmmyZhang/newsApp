@@ -31,12 +31,21 @@
             android:textStyle="italic"
             android:typeface="serif" />
 
+        <ImageView
+            android:id="@+id/detail_img"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_margin="35sp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/iv_content_description"/>
+
         <TextView
             android:id="@+id/detail_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp"
+            android:textColorLink="#5588cc"
             android:typeface="serif"
             android:layout_margin="30sp"/>
 

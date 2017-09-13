@@ -146,12 +146,20 @@ public class GetNews {
 
         JSONObject jo = new JSONObject(data);
 
-        return new StoryDetail(
-                jo.getString("news_Title"),
-                jo.getString("news_Category"),
-                jo.getString("news_Content"),
-                jo.getString("news_URL"));
-
+        if (jo.has("news_Category"))
+            return new StoryDetail(
+                    jo.getString("news_Title"),
+                    jo.getString("news_Category"),
+                    jo.getString("news_Content"),
+                    jo.getString("news_URL"),
+                    jo.getJSONArray("seggedPListOfContent").getString(0));
+        else
+            return new StoryDetail(
+                    jo.getString("news_Title"),
+                    "",
+                    jo.getString("news_Content"),
+                    jo.getString("news_URL"),
+                    jo.getJSONArray("seggedPListOfContent").getString(0));
     }
 
     public void search(String key) {
@@ -206,12 +214,12 @@ public class GetNews {
         while (w.hasNextLine())
             data = data + w.nextLine();
         try {
-//            System.out.println("Request URL: " + s);
+            System.out.println("Request URL: " + s);
             JSONObject jo = new JSONObject(data);
             return jo.getJSONArray("list");
         } catch (Exception e) {
             System.out.println("urlQuest : " + e);
-            return new JSONArray();
+            return urlQuest(s);
         }
     }
 

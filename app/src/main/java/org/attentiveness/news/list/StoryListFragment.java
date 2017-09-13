@@ -33,6 +33,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
 
     public static final String EXTRA_ID = "id";
     public static final String EXTRA_DATE = "date";
+    public static final String EXTRA_IMG = "img";
 
     @BindView(R.id.rv_story_list)
     RecyclerView mStoriesView;
@@ -198,6 +199,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         if (story != null && !story.getId().equals("")) {
             Intent intent = new Intent(this.getActivity(), StoryDetailActivity.class);
             intent.putExtra(EXTRA_ID, story.getId());
+            intent.putExtra(EXTRA_IMG,story.getImage());
             startActivity(intent);
         }
     }
