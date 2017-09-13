@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp"
+            android:textColorLink="#5588cc"
             android:typeface="serif"
             android:layout_margin="30sp"/>
 

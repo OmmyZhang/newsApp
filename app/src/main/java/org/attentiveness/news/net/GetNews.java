@@ -150,7 +150,8 @@ public class GetNews {
                 jo.getString("news_Title"),
                 jo.getString("news_Category"),
                 jo.getString("news_Content"),
-                jo.getString("news_URL"));
+                jo.getString("news_URL"),
+                jo.getJSONArray("seggedPListOfContent").getString(0));
 
     }
 
@@ -211,7 +212,7 @@ public class GetNews {
             return jo.getJSONArray("list");
         } catch (Exception e) {
             System.out.println("urlQuest : " + e);
-            return new JSONArray();
+            return urlQuest(s);
         }
     }
 
