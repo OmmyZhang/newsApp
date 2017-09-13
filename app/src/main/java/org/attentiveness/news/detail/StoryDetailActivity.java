@@ -119,7 +119,7 @@ public class StoryDetailActivity extends BaseActivity {
     @Override
     public void onPause() {
         super.onPause();
-        readTTS.stop();
+//        readTTS.stop();
     }
 
     @Override

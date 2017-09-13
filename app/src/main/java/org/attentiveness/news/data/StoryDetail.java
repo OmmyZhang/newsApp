@@ -22,10 +22,6 @@ public class StoryDetail {
         return 0;
     }
 
-    public void setId(int id) {
-
-    }
-
     public String getContent() {
         return content;
     }
@@ -37,7 +33,12 @@ public class StoryDetail {
     public String getTitle() {
         return title;
     }
+
     public String getCategory() {
         return category;
+    }
+
+    public String getUrl(){
+        return url;
     }
 }

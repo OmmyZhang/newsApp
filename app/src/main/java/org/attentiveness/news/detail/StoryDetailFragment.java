@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
     TextView titleText;
     @BindView(R.id.detail_category)
     TextView categoryText;
+    @BindView(R.id.detail_url)
+    TextView urlText;
 
     private StoryDetailContract.Presenter mPresenter;
 
@@ -54,14 +57,10 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         super.onActivityCreated(savedInstanceState);
     }
 
-//    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_story_detail, container, false);
         ButterKnife.bind(this, view);
-
-//        WebSettings webSettings = this.mWebView.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
         setHasOptionsMenu(true);
         return view;
     }
@@ -110,6 +109,8 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         titleText.setText(storyDetail.getTitle());
         categoryText.setText(storyDetail.getCategory());
         contentText.setText(content);
+        urlText.setAutoLinkMask(Linkify.ALL);
+        urlText.setText("原文地址 "+storyDetail.getUrl());
     }
 
     @Override
