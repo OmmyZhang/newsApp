@@ -49,7 +49,6 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Story story = this.mStoryList.get(position);
-        List<String> imageUrlList = story.getImageList();
         final String imageUrl = story.getImage();
 
         final ImageView imageView = holder.mImageView;
@@ -95,13 +94,13 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
                             s2 = s.split(";")[2];
                         } else
                             s1 = s;
+                        story.setImage(s1);
                         Picasso.with(holder.mImageView.getContext())
                                 .load(s1)
                                 .placeholder(R.drawable.ic_image_black_24dp)
                                 .into(imageView, new Callback() {
                                     @Override
                                     public void onSuccess() {
-                                        story.setImage(s1);
                                     }
 
                                     @Override

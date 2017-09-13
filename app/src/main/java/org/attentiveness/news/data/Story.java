@@ -27,16 +27,22 @@ public class Story {
 
         this.title = title;
         this.intro = intro;
-        if(!img.contains("http")) {
-            imageList = new ArrayList<String>();
-            firstImage = "baidu::"+title;
-        }
-        else {
+
+        firstImage = "baidu::" + title;
+
+        if (img.contains("http")) {
             String[] imgs = img.split(";| ");
             imageList = Arrays.asList(imgs);
-            firstImage = imageList.get(0);
+
+            for (String tmp : imageList)
+                if (!(tmp.toLowerCase().contains("logo") || tmp.toLowerCase().contains("ico") || tmp.toLowerCase().contains("qrcode") || tmp.toLowerCase().contains("tang.jpg"))) {
+                    firstImage = tmp;
+                    break;
+                }
         }
     }
+
+
 
     public String getId() {
         return id;

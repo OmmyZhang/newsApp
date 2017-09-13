@@ -49,10 +49,11 @@ public class StoryDetailActivity extends BaseActivity {
         setup();
 
         if (savedInstanceState == null) {
-            this.mStoryId = getIntent().getStringExtra(StoryListFragment.EXTRA_ID);
-            this.mStoryImg = getIntent().getStringExtra(StoryListFragment.EXTRA_IMG);
+            mStoryId = getIntent().getStringExtra(StoryListFragment.EXTRA_ID);
+            mStoryImg = getIntent().getStringExtra(StoryListFragment.EXTRA_IMG);
+            System.out.println("Detail get img: " + mStoryImg);
         } else {
-            this.mStoryId = savedInstanceState.getString(INSTANCE_STORY_ID);
+            mStoryId = savedInstanceState.getString(INSTANCE_STORY_ID);
         }
 
         mStoryDetailFragment = (StoryDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);

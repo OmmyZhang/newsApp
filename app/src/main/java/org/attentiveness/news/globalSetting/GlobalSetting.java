@@ -10,11 +10,13 @@ import java.util.Set;
 
 public class GlobalSetting {
 
-    private GlobalSetting INSTANCE;
+    static private GlobalSetting INSTANCE;
 
     private boolean allowBackstageVoice = true;
     private boolean noPicture = false;
     private boolean nightMode = false;
+    private boolean allowOtherClass = true;
+
     private Map<String,Double>  readRecord;
     private Set<String> notShow;
     private Set<String> interestedClass;
@@ -24,11 +26,15 @@ public class GlobalSetting {
         readRecord = new HashMap<String,Double>();
 
     }
-    public GlobalSetting getINSTANCE()
+    static public GlobalSetting getINSTANCE()
     {
         if(INSTANCE == null)
             INSTANCE = new GlobalSetting();
         return INSTANCE;
+    }
+
+    public boolean isAllowOtherClass(){
+        return allowOtherClass;
     }
 
     public void resetReadRecord()

@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.attentiveness.news.data.StoryDetail;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.json.*;
 
 public class GetNews {
@@ -53,7 +54,8 @@ public class GetNews {
 
         for (int i = 0; i < result.length(); ++i) {
             JSONObject e = result.getJSONObject(i);
-            if (!classTag.contains(e.getString("newsClassTag")) && Math.random() > 0.05)
+            if (!classTag.contains(e.getString("newsClassTag")) &&
+                    ( Math.random() > 0.05 || !GlobalSetting.getINSTANCE().isAllowOtherClass()))
                 continue;
             HashMap<String, String> news = new HashMap<String, String>();
             boolean nono = false;
@@ -122,18 +124,6 @@ public class GetNews {
         return ans.subList(0, Math.min(pageSize / 2, ans.size()));
     }
 
-    private JSONObject getJsonStory(String id) throws Exception {
-        URL cs = new URL(BASE_URL + "detail?newsId=" + id);
-
-        Scanner w = new Scanner(cs.openStream());
-
-        String data = "";
-        while (w.hasNextLine())
-            data = data + w.nextLine();
-
-        JSONObject jo = new JSONObject(data);
-        return jo;
-    }
 
     public StoryDetail getDetail(String id) throws Exception {
         URL cs = new URL(BASE_URL + "detail?newsId=" + id);
