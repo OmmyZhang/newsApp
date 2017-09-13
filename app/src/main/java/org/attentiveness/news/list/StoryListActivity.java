@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
 public class StoryListActivity extends BaseActivity {
 
     private ViewPager mVP;
+    private PagerTabStrip mPTS;
     private SlidePagerAdapter spa;
     private ArrayList<Fragment> fList;
 
@@ -47,6 +49,7 @@ public class StoryListActivity extends BaseActivity {
         YouMayLikeFragment newMayLikeFragement = YouMayLikeFragment.newInstance();
 
         mVP = (ViewPager) findViewById(R.id.vpg);
+        mPTS = (PagerTabStrip) findViewById(R.id.vpg_title);
 
         fList = new ArrayList<Fragment>();
         fList.add(newsListFragment);

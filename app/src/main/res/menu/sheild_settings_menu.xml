@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/plus"
+        android:icon="@drawable/ic_plus"
+        android:title="@string/plus"
+        app:showAsAction="always"
+        android:onClick=""
+        />
+    <item android:id="@+id/minus"
+        android:icon="@drawable/ic_minus"
+        android:title="@string/minus"
+        app:showAsAction="always"
+        android:onClick=""
+        />
+</menu>
