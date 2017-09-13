@@ -40,8 +40,8 @@ public class YouMayLikePresenter extends StoryListPresenter {
         super(repository, view);
         mRepository = repository;
         mNewsListView = view;
-        mReadRecord = GlobalSetting.getINSTANCE().getReadRecord();
         mNewsListView.setPresenter(this);
+        ((YouMayLikeFragment)mNewsListView).setYMPresenter(this);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class YouMayLikePresenter extends StoryListPresenter {
             @Override
             protected void subscribeActual(Observer<? super List<HashMap>> observer) {
                 try {
-                    List<HashMap> storyList = GetNews.getINSTANCE().mayLike(mReadRecord);
+                    List<HashMap> storyList = GetNews.getINSTANCE().mayLike(GlobalSetting.getINSTANCE().getReadRecord());
                     observer.onNext(storyList);
                 } catch (Exception e) {
                     observer.onError(e);

@@ -7,6 +7,8 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.attentiveness.news.data.Story;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class SlidePagerAdapter extends FragmentPagerAdapter {
 
     private ArrayList<Fragment> fLists;
+    private StoryListFragment mCurrentFragment;
 
     public SlidePagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
         super(fm);
@@ -37,6 +40,17 @@ public class SlidePagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position){
         return fLists.get(position);
+    }
+
+    @Override
+    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+        mCurrentFragment = (StoryListFragment) object;
+        super.setPrimaryItem(container, position, object);
+    }
+
+
+    public StoryListFragment getCurrentFragment() {
+        return mCurrentFragment;
     }
 
 }

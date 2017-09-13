@@ -90,7 +90,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
             @Override
             public void onRefresh() {
                 mLoadMoreListener.refreshed();
-                mPresenter.loadNewsList("", false, true);
+                mPresenter.loadNewsList("", false, false);
             }
         });
 
@@ -108,7 +108,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
     public void onResume() {
         super.onResume();
         if(needRefresh) {
-            this.mPresenter.loadNewsList("", true, true);
+            this.mPresenter.loadNewsList("", true, false);
             needRefresh = false;
         }
         this.mSearchListView.addOnScrollListener(this.mLoadMoreListener);
@@ -181,7 +181,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
             protected void subscribeActual(Observer<? super List<HashMap>> observer) {
                 ArrayList<HashMap> stories = new ArrayList<>();
                 GetNews.getINSTANCE().search(mKeyWord);
-                System.out.println(mKeyWord);
+                System.out.println("Key:: " + mKeyWord);
                 try {
                     stories = GetNews.getINSTANCE().searchMore();
                     observer.onNext(stories);
@@ -203,13 +203,16 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
                     @Override
                     public void onNext(List<HashMap> hashMaps) {
                         List<Story> list = new ArrayList<>();
+                        System.out.println("search:: " + hashMaps.get(0).get("news_Title"));
                         for (HashMap item : hashMaps) {
                             list.add(new Story((String) item.get("news_ID"),
                                     (String) item.get("news_Title"),
                                     (String) item.get("news_Pictures"),
                                     (String) item.get("news_Intro")));
                         }
+
                         storyList.addAll(list);
+                        System.out.println("search:: " + storyList.get(0).getTitle());
                         System.out.println("story_list_size: " + list.size());
                         mStoriesAdapter.setItemList(storyList);
                     }
