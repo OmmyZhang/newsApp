@@ -17,7 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,24 +28,24 @@ import java.util.regex.Pattern;
 
 public class GetNews {
     final private static String BASE_URL = "http://166.111.68.66:2042/news/action/query/";
-    static private HashSet<String> classTag;
-    static private HashSet<String> notShow;
-    static private GetNews INSTANTCE;
+    static private Set<String> classTag;
+    static private Set<String> notShow;
+    static private GetNews INSTANCE;
 
     private int pageSize, currNo;
     private int searchNo;
     private String searchKey;
 
 
-    static public void newINSTANCE(HashSet<String> cT, HashSet<String> nS, int pS) {
-        INSTANTCE = new GetNews(cT, nS, pS);
+    static public void newINSTANCE(Set<String> cT, Set<String> nS, int pS) {
+        INSTANCE = new GetNews(cT, nS, pS);
     }
 
     static public GetNews getINSTANCE() {
-        return INSTANTCE;
+        return INSTANCE;
     }
 
-    private GetNews(HashSet<String> cT, HashSet<String> nS, int pS) {
+    private GetNews(Set<String> cT, Set<String> nS, int pS) {
         classTag = cT;
         notShow = nS;
         pageSize = pS;
@@ -87,7 +88,7 @@ public class GetNews {
 
     public List<HashMap> mayLike(Map<String, Double> readRecord) throws Exception {
         System.out.println("MayLike START!");
-        JSONArray stories = latest(500, (int) (Math.random() * 200 + 1));
+        JSONArray stories = latest(300, (int) (Math.random() * 200 + 1));
         System.out.println("MayLike GETDATA!");
         ArrayList<HashMap> ans = new ArrayList<HashMap>();
 
@@ -143,6 +144,20 @@ public class GetNews {
             data = data + w.nextLine();
 
         JSONObject jo = new JSONObject(data);
+
+        try
+        {
+            JSONArray keywords = jo.getJSONArray("Keywords");
+            for(int i=0;i<keywords.length();++i) {
+                String word = keywords.getJSONObject(i).getString("word");
+                double weight = keywords.getJSONObject(i).getDouble("score");
+
+                GlobalSetting.getINSTANCE().updateReadRecord(word,weight);
+            }
+        }catch (Exception e)
+        {
+            System.out.println("keywords " + e);
+        }
 
         if (jo.has("news_Category"))
             return new StoryDetail(
@@ -249,9 +264,5 @@ public class GetNews {
         String s2 = mm.find() ? mm.group(1) : "no";
 
         return  "baidu;"+ s1 + ";" + s2;
-    }
-
-    public void clear() {
-        INSTANTCE = null;
     }
 }

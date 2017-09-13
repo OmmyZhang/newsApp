@@ -18,6 +18,7 @@ public class GlobalSetting {
     private boolean noPicture = false;
     private boolean nightMode = false;
     private boolean allowOtherClass = true;
+    private boolean autoRefreshMayLike = false;
 
     private Map<String,Double>  readRecord;
     private Set<String> notShow;
@@ -28,10 +29,18 @@ public class GlobalSetting {
     private GlobalSetting()
     {
         readRecord = new HashMap<String,Double>();
-        readRecord.put("澳洲",100.0);
-        readRecord.put("李克强",100.0);
 
         readToday = new HashSet<String>();
+
+        interestedClass = new HashSet<String>();
+        interestedClass.add("科技");
+        interestedClass.add("教育");
+        interestedClass.add("军事");
+//            ct.add("国内");
+//            ct.add("国际");
+//            ct.add("文化");
+
+        notShow = new HashSet<String>();
     }
 
     public boolean ifRead(String id)
@@ -65,10 +74,15 @@ public class GlobalSetting {
 
     public Map<String, Double> getReadRecord() { return readRecord; }
 
+    public Set<String> getInterestedClass(){
+        return interestedClass;
+    }
+
     public Set<String> getNotShow()
     {
         return notShow;
     }
+
     public void setNotShow(Set<String> notShow)
     {
         this.notShow = notShow;
@@ -94,4 +108,11 @@ public class GlobalSetting {
         //
     }
 
+    public boolean isAutoRefreshMayLike() {
+        return autoRefreshMayLike;
+    }
+
+    public void setAutoRefreshMayLike(){
+        autoRefreshMayLike = !autoRefreshMayLike;
+    }
 }
