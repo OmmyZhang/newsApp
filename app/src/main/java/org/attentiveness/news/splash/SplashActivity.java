@@ -11,7 +11,6 @@ import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.list.StoryListActivity;
 
-
 import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity{
@@ -24,6 +23,9 @@ public class SplashActivity extends BaseActivity{
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+
+        //JSONStore dataLoader = new JSONStore(GlobalSetting.getINSTANCE());
+        //dataLoader.loadSettings().getINSTANCE();
 
         init();
     }
