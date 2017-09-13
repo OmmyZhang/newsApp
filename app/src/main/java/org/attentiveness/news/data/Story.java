@@ -35,7 +35,7 @@ public class Story {
             imageList = Arrays.asList(imgs);
 
             for (String tmp : imageList)
-                if (!(tmp.toLowerCase().contains("logo") || tmp.toLowerCase().contains("ico") || tmp.toLowerCase().contains("qrcode") || tmp.toLowerCase().contains("tang.jpg"))) {
+                if (tmp.contains("http") && !(tmp.toLowerCase().contains("logo") || tmp.toLowerCase().contains("ico") || tmp.toLowerCase().contains("qrcode") || tmp.toLowerCase().contains("tang.jpg"))) {
                     firstImage = tmp;
                     break;
                 }
