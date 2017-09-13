@@ -2,18 +2,21 @@ package org.attentiveness.news.list;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
-<<<<<<< HEAD
+
 import android.support.v4.view.PagerTabStrip;
-=======
+
 import android.support.v4.view.MenuItemCompat;
->>>>>>> b406e30a6a0b720526c650047583cc302dc97f59
+
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -65,6 +68,21 @@ public class StoryListActivity extends BaseActivity {
 
         spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
         mVP.setAdapter(spa);
+
+        int uimode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if(Configuration.UI_MODE_NIGHT_NO == uimode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            shared(true);
+            recreate();
+        }
+    }
+
+    private void shared(boolean flag){
+        SharedPreferences sp = getSharedPreferences("Info", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putBoolean("Day",flag);
+        edit.commit();
+
     }
 
     @Override

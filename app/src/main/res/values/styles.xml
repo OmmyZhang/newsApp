@@ -1,16 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="cv_initial_background">@color/cv_initial_background</item>
-        <item name="fl_initial_background">@color/fl_initial_background</item>
-        <item name="tab_text_color">@color/tab_text_color</item>
-        <item name="text_color">@color/text_color</item>
-        <item name="text_divider">@color/text_divider</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
