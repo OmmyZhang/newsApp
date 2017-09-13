@@ -37,6 +37,8 @@ public class StoryDetailActivity extends BaseActivity {
     @BindDrawable(R.mipmap.ic_fav_ed)
     Drawable ic_fav_yes;
 
+    private  StoryDetailFragment mStoryDetailFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,17 +50,17 @@ public class StoryDetailActivity extends BaseActivity {
         if (savedInstanceState == null) {
             this.mStoryId = getIntent().getStringExtra(StoryListFragment.EXTRA_ID);
         } else {
-            this.mStoryId =  savedInstanceState.getString(INSTANCE_STORY_ID);
+            this.mStoryId = savedInstanceState.getString(INSTANCE_STORY_ID);
         }
 
-        StoryDetailFragment storyDetailFragment = (StoryDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
-        if (storyDetailFragment == null) {
-            storyDetailFragment = StoryDetailFragment.newInstance();
-            addFragment(getSupportFragmentManager(), R.id.fl_container, storyDetailFragment);
+        mStoryDetailFragment = (StoryDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fl_container);
+        if (mStoryDetailFragment == null) {
+            mStoryDetailFragment = StoryDetailFragment.newInstance();
+            addFragment(getSupportFragmentManager(), R.id.fl_container, mStoryDetailFragment);
         }
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
-        StoryDetailPresenter presenter = new StoryDetailPresenter(this.mStoryId, repository, storyDetailFragment);
+        StoryDetailPresenter presenter = new StoryDetailPresenter(this.mStoryId, repository, mStoryDetailFragment);
 
         readTTS = new TextToSpeech(StoryDetailActivity.this, new TextToSpeech.OnInitListener() {
             @Override
@@ -86,12 +88,12 @@ public class StoryDetailActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //outState.putInt(INSTANCE_STORY_ID, this.mStoryId);
+        outState.putString(INSTANCE_STORY_ID, this.mStoryId);
     }
 
     public void read_out(MenuItem it) {
         Toast.makeText(StoryDetailActivity.this, "开始朗读", Toast.LENGTH_SHORT).show();
-        readTTS.speak("朗读朗读朗读，我能朗读", TextToSpeech.QUEUE_FLUSH, null);
+        readTTS.speak(mStoryDetailFragment.getText(), TextToSpeech.QUEUE_FLUSH, null);
     }
     public void share(MenuItem it) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -114,4 +116,16 @@ public class StoryDetailActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+//        readTTS.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (readTTS != null)
+            readTTS.shutdown();
+    }
 }

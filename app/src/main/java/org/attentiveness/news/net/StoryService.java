@@ -1,6 +1,5 @@
 package org.attentiveness.news.net;
 
-import org.attentiveness.news.data.News;
 import org.attentiveness.news.data.StoryDetail;
 
 import io.reactivex.Observable;

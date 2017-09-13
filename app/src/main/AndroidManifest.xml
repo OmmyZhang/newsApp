@@ -33,6 +33,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".list.StoryListActivity"/>
         </activity>
+        <activity android:name=".list.SearchActivity"
+            android:label="Search"
+            android:parentActivityName=".list.StoryListActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

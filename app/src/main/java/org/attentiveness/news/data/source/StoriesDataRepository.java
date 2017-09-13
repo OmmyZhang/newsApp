@@ -133,7 +133,8 @@ public class StoriesDataRepository implements StoriesDataSource {
     }
 
     private Observable<List<Story>> getAndSaveStoryListFromLocal(String date) {
-        return this.mStoriesLocalDataSource.getStories(date).doOnNext(new Consumer<List<Story>>() {
+        return this.mStoriesLocalDataSource.getStories(date)
+                .doOnNext(new Consumer<List<Story>>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull List<Story> storyList) throws Exception {
                 for (Story story : storyList) {

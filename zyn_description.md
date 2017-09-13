@@ -10,6 +10,7 @@
   + ArrayList<HashMap> getMore()
   + void search(String keyword)
   + ArrayList<HashMap> search_more()
+  + ArrayList<HashMap> myLike(HashMap<String,double>)
 
   第一次进入和刷新请新构造GetNews对象，上拉获取更多请使用getMore()。
 
@@ -21,7 +22,7 @@
 
   read方法
 
-  没什么好说的，把该读的东西填进去就行了。
+  没什么好说的，已完整实现
 
 + 分享功能
 
@@ -30,3 +31,7 @@
 + 收藏功能
 
   fav方法，没什么好说的，正常显示新闻以后再实现储存。
+
++ 自行完成了新闻列表和新闻详情
+
++ 新闻补图 图片爬自 image.baidu.com。每次爬前两张，第一张error用第二张。原始链接error的抹掉原始链接。
