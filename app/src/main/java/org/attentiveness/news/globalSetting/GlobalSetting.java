@@ -10,7 +10,8 @@ import java.util.Set;
 
 public class GlobalSetting {
 
-    static private GlobalSetting INSTANCE;
+    static private GlobalSetting INSTANCE = null;
+
 
     private boolean allowBackstageVoice = true;
     private boolean noPicture = false;
@@ -26,7 +27,8 @@ public class GlobalSetting {
         readRecord = new HashMap<String,Double>();
 
     }
-    static public GlobalSetting getINSTANCE()
+
+    public static GlobalSetting getINSTANCE()
     {
         if(INSTANCE == null)
             INSTANCE = new GlobalSetting();
@@ -42,7 +44,9 @@ public class GlobalSetting {
         readRecord = new HashMap<String,Double>();
     }
 
-    public  Set<String> getNotShow()
+    public Map<String, Double> getReadRecord() { return readRecord; }
+
+    public Set<String> getNotShow()
     {
         return notShow;
     }

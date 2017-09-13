@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,6 +24,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by shols on 2017/9/11.
@@ -31,11 +38,15 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
 
     @BindView(R.id.rv_search_list)
     RecyclerView mSearchListView;
+    @BindView((R.id.rl_search_fresh_view))
+    ScrollChildSwipeRefreshLayout mSwipeRefreshLayout;
 
     private StoryListAdapter mStoriesAdapter;
     private LoadMoreListener mLoadMoreListener;
     private StoryListContract.Presenter mPresenter;
     private static String mKeyWord;
+
+    private boolean needRefresh = true;
 
     public static SearchFragment newInstance(String keyWord) {
         SearchFragment searchFragment = new SearchFragment();
@@ -67,7 +78,21 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
                 mPresenter.loadNewsList("", false, true);
             }
         };
-        mPresenter.loadNewsList("", false, true);
+        //mPresenter.loadNewsList("", false, true);
+
+        this.mSwipeRefreshLayout.setColorSchemeColors(
+                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
+                ContextCompat.getColor(getActivity(), R.color.colorAccent),
+                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+        );
+        this.mSwipeRefreshLayout.setChildView(this.mSearchListView);
+        this.mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mLoadMoreListener.refreshed();
+                mPresenter.loadNewsList("", false, true);
+            }
+        });
 
         setHasOptionsMenu(true);
         return rootView;
@@ -80,66 +105,126 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
     }
 
     @Override
-    public void showStoryList(List<Story> storyList) {
-        this.mSearchListView.setVisibility(View.VISIBLE);
-
-        final ArrayList<HashMap>[] stories = new ArrayList[]{new ArrayList<HashMap>()};
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    GetNews.getINSTANCE().search(mKeyWord);
-                    stories[0] = GetNews.getINSTANCE().searchMore();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-        List<Story> list = null;
-        for (HashMap item : stories[0]) {
-            list.add(new Story((String) item.get("news_ID"),
-                    (String) item.get("news_Title"),
-                    (String) item.get("news_Pictures"),
-                    (String) item.get("news_Intro")));
+    public void onResume() {
+        super.onResume();
+        if(needRefresh) {
+            this.mPresenter.loadNewsList("", true, true);
+            needRefresh = false;
         }
-        System.out.println("story_list_size: "+list.size());
-        this.mStoriesAdapter.setItemList(list);
+        this.mSearchListView.addOnScrollListener(this.mLoadMoreListener);
     }
 
     @Override
-    public void appendStoryList(List<Story> storyList) {
-        this.mSearchListView.setVisibility(View.VISIBLE);
+    public void onPause() {
+        super.onPause();
+        this.mPresenter.unsubscribe();
+        this.mSearchListView.removeOnScrollListener(this.mLoadMoreListener);
+    }
 
-        final List<Story> list = new ArrayList<>();
-        Thread thread = new Thread(new Runnable() {
+    @Override
+    public void showStoryList(List<Story> storyList) {
+        this.mSearchListView.setVisibility(View.VISIBLE);
+        Observable<List<HashMap>> observable = new Observable<List<HashMap>>() {
             @Override
-            public void run() {
+            protected void subscribeActual(Observer<? super List<HashMap>> observer) {
+                ArrayList<HashMap> stories = new ArrayList<>();
+                GetNews.getINSTANCE().search(mKeyWord);
+                System.out.println(mKeyWord);
                 try {
-                    ArrayList<HashMap> stories = new ArrayList<>();
-                    GetNews.getINSTANCE().search(mKeyWord);
-                    System.out.println(mKeyWord);
                     stories = GetNews.getINSTANCE().searchMore();
-                    System.out.println("stories_size: "+stories.size());
-                    for (HashMap item : stories) {
-                        list.add(new Story((String) item.get("news_ID"),
-                                (String) item.get("news_Title"),
-                                (String) item.get("news_Pictures"),
-                                (String) item.get("news_Intro")));
-                    }
+                    observer.onNext(stories);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    observer.onError(e);
+                } finally {
+                    observer.onComplete();
                 }
             }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        };
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<HashMap>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        System.out.println("story_list_size: "+list.size());
-        this.mStoriesAdapter.setItemList(list);
+                    }
+
+                    @Override
+                    public void onNext(List<HashMap> hashMaps) {
+                        List<Story> list = new ArrayList<>();
+                        for (HashMap item : hashMaps) {
+                            list.add(new Story((String) item.get("news_ID"),
+                                    (String) item.get("news_Title"),
+                                    (String) item.get("news_Pictures"),
+                                    (String) item.get("news_Intro")));
+                        }
+                        System.out.println("story_list_size: " + list.size());
+                        mStoriesAdapter.setItemList(list);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showMessage(mSearchListView, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void appendStoryList(final List<Story> storyList) {
+        this.mSearchListView.setVisibility(View.VISIBLE);
+        Observable<List<HashMap>> observable = new Observable<List<HashMap>>() {
+            @Override
+            protected void subscribeActual(Observer<? super List<HashMap>> observer) {
+                ArrayList<HashMap> stories = new ArrayList<>();
+                GetNews.getINSTANCE().search(mKeyWord);
+                System.out.println(mKeyWord);
+                try {
+                    stories = GetNews.getINSTANCE().searchMore();
+                    observer.onNext(stories);
+                } catch (Exception e) {
+                    observer.onError(e);
+                } finally {
+                    observer.onComplete();
+                }
+            }
+        };
+        observable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<HashMap>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<HashMap> hashMaps) {
+                        List<Story> list = new ArrayList<>();
+                        for (HashMap item : hashMaps) {
+                            list.add(new Story((String) item.get("news_ID"),
+                                    (String) item.get("news_Title"),
+                                    (String) item.get("news_Pictures"),
+                                    (String) item.get("news_Intro")));
+                        }
+                        storyList.addAll(list);
+                        System.out.println("story_list_size: " + list.size());
+                        mStoriesAdapter.setItemList(storyList);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showMessage(mSearchListView, e.getMessage());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
     }
 
     @Override
@@ -148,7 +233,16 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
+    public void setLoadingIndicator(final boolean active) {
+        if (!this.isActive() || getView() == null) {
+            return;
+        }
+        this.mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(active);
+            }
+        });
     }
 
     @Override
@@ -163,7 +257,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
 
     @Override
     public void showError(String message) {
-        showMessage(this.mSearchListView, message);
+        showMessage(this.mSwipeRefreshLayout, message);
     }
 
     @Override
