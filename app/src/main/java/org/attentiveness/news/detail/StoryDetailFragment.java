@@ -1,7 +1,6 @@
 package org.attentiveness.news.detail;
 
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +9,6 @@ import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +18,8 @@ import com.squareup.picasso.Picasso;
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.StoryDetail;
+import org.attentiveness.news.globalSetting.JSONStore;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -148,6 +145,9 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         contentText.setText(content);
         Pattern words = storyDetail.getNames();
         Linkify.addLinks(contentText, words, "https://baike.baidu.com/item/");
+
+        JSONStore newsSaver = new JSONStore(getActivity());
+        newsSaver.saveNews(storyDetail);
 
     }
 
