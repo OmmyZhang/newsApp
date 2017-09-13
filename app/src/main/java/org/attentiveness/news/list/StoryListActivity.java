@@ -46,13 +46,13 @@ public class StoryListActivity extends BaseActivity {
 
         String today = DateUtil.getToday();
         newsListFragment = StoryListFragment.newInstance(today);
+        newMayLikeFragement = YouMayLikeFragment.newInstance();
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
         StoryListPresenter newListPresenter= new StoryListPresenter(repository, newsListFragment);
+        YouMayLikePresenter youMayLikePresenter = new YouMayLikePresenter(repository, newMayLikeFragement);
 
-
-        newMayLikeFragement = YouMayLikeFragment.newInstance();
 
         mVP = (ViewPager) findViewById(R.id.vpg);
 
@@ -189,5 +189,6 @@ public class StoryListActivity extends BaseActivity {
     {
         //addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
         newsListFragment.refresh_from_menu();
+        newMayLikeFragement.refresh_from_menu();
     }
 }
