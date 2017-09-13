@@ -80,6 +80,10 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         return titleText.getText() + "\n" + contentText.getText() + "\n" + urlText.getText();
     }
 
+    public  String getmStoryImg() {
+        return mStoryImg;
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
