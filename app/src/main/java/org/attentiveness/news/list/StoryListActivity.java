@@ -22,6 +22,7 @@ import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
+import org.attentiveness.news.globalSetting.JSONStore;
 import org.attentiveness.news.util.DateUtil;
 
 import java.util.ArrayList;
@@ -35,7 +36,9 @@ public class StoryListActivity extends BaseActivity {
     private ArrayList<Fragment> fList;
     private StoryListFragment newsListFragment;
     private SearchView mSearchView;
-    YouMayLikeFragment newMayLikeFragement;
+    private YouMayLikeFragment newMayLikeFragement;
+
+    private JSONStore mDataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +169,8 @@ public class StoryListActivity extends BaseActivity {
                 builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //mDataStore = new JSONStore(GlobalSetting.getINSTANCE());
+                        //mDataStore.saveToLocal();
                         finish();
                     }
                 });

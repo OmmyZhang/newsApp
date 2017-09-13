@@ -270,6 +270,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
         if (story != null && !story.getId().equals("")) {
             Intent intent = new Intent(this.getActivity(), StoryDetailActivity.class);
             intent.putExtra("id", story.getId());
+            intent.putExtra("img", story.getImage());
             startActivity(intent);
         }
     }

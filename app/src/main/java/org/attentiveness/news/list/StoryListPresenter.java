@@ -67,7 +67,7 @@ class StoryListPresenter implements StoryListContract.Presenter {
 //            ct.add("国内");
 //            ct.add("国际");
 //            ct.add("文化");
-            GetNews.newINSTANCE(ct , new HashSet<String>() , 20);
+            GetNews.newINSTANCE(ct , new HashSet<String>() , 50);
         }
 
         if (showLoadingUI) {
