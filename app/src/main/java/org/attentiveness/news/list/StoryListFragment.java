@@ -54,7 +54,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
 
     private LinearLayoutManager linearLayoutManager;
 
-    private boolean needRefresh = true;
+    public boolean needRefresh = true;
 
     public static StoryListFragment newInstance(String date) {
         StoryListFragment storyListFragment = new StoryListFragment();

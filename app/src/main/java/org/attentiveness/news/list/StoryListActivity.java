@@ -147,6 +147,7 @@ public class StoryListActivity extends BaseActivity {
                         break;
                     }
                     case R.id.nav_settings:
+                        newsListFragment.needRefresh = true;
                         Intent intent = new Intent(StoryListActivity.this, MySettingActivity.class);
                         startActivity(intent);
                         break;

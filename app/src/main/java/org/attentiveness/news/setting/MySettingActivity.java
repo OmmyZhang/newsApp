@@ -1,6 +1,7 @@
 package org.attentiveness.news.setting;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import org.attentiveness.news.globalSetting.GlobalSetting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.SimpleTimeZone;
 
 import butterknife.BindView;
@@ -59,7 +61,7 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
     Button btnSure;
 
     // 存放标签数据的数组
-    String[] mTextStr = { "A渠道", "B渠道", "TCL空调部", "TCL家电", "天猫", "京东", "淘宝" };
+//    String[] mTextStr = { };
 
     ArrayList<String>  list = new ArrayList<String>();
 
@@ -162,9 +164,14 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
     }
 
     private void initList() {
+        Set<String> nSW = GlobalSetting.getINSTANCE().getNotShow();
+        for(String s:nSW)
+            list.add(s);
+/*
         for(int i=0;i<mTextStr.length;i++){
             list.add(mTextStr[i]);
         }
+        */
     }
 
     private void initBtnListener() {
@@ -183,7 +190,8 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
                 /**
                  * 获取  子view的数量   并添加进去
                  */
-                if(label!=null&&!label.equals("")){
+                if(label!=null&&!label.equals("")&&!GlobalSetting.getINSTANCE().checkNotShow(label)){
+                    GlobalSetting.getINSTANCE().addNotShow(label);
                     for(int m = 0;m < mTagLayout.getChildCount()-1;m++){
                         newStr[m] =((TextView)mTagLayout.getChildAt(m).
                                 findViewById(R.id.text)).getText().toString();//根据  当前   位置查找到 当前    textView中标签  内容
@@ -192,6 +200,14 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
                     initLayout(list);
                     inputLabel.setText("");
                 }
+            }
+        });
+
+        inputLabel.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                btnSure.callOnClick();
+                return false;
             }
         });
     }
@@ -232,6 +248,7 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
                     for(int j = 0; j < icons.length;j++){
                         if(icon.equals(icons[j])){  //获取   当前  点击删除图标的位置：
                             mTagLayout.removeViewAt(j);
+                            GlobalSetting.getINSTANCE().delNotShow( list.get(j) );
                             list.remove(j);
                             initLayout(list);
                         }
@@ -300,13 +317,14 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
             item.idx = tempIdx;
             return true;
         }
-        int tagCnt = mAddTags.size(); // 添加标签的条数
+
         TagItem item = new TagItem();
+
         item.tagText = str;
         item.tagCustomEdit = bCustom;
         item.idx = idx;
         mAddTags.add(item);
-        tagCnt++;
+
         return true;
     }
 }

@@ -49,6 +49,12 @@
             android:textSize="15sp"
             android:switchPadding="20dp"/>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_margin="20sp"
+            android:background="@android:color/darker_gray"  />
+
         <include layout="@layout/not_show_words"/>
     </LinearLayout>
     </ScrollView>
