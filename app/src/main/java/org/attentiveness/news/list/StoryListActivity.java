@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -50,7 +51,7 @@ public class StoryListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(null);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_list);
         ButterKnife.bind(this);
         setup(R.drawable.ic_menu);
@@ -204,6 +205,7 @@ public class StoryListActivity extends BaseActivity {
         mDataStore.saveSettings();
     }
 
+
     public void refresh(MenuItem it)
     {
         spa.getCurrentFragment().refresh_from_menu();
@@ -224,12 +226,14 @@ public class StoryListActivity extends BaseActivity {
         if(nightMode && uiMode == Configuration.UI_MODE_NIGHT_NO) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             shared(true);
-            recreate();
         } else if(!nightMode && uiMode == Configuration.UI_MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             shared(false);
-            recreate();
         }
+        //recreate();
+        startActivity(new Intent(this,StoryListActivity.class));
+        overridePendingTransition(R.anim.alpha_in_out, R.anim.alpha_in_out);
+        finish();
     }
 
     private void shared(boolean flag){
