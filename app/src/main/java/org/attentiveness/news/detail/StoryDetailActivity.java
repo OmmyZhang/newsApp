@@ -1,25 +1,43 @@
 package org.attentiveness.news.detail;
 
+import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.app.ActivityCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
+import org.attentiveness.news.data.Story;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
 import org.attentiveness.news.list.StoryListFragment;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindDrawable;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class StoryDetailActivity extends BaseActivity {
 
@@ -104,13 +122,65 @@ public class StoryDetailActivity extends BaseActivity {
         readTTS.speak(mStoryDetailFragment.getText(), TextToSpeech.QUEUE_FLUSH, null);
     }
     public void share(MenuItem it) {
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("image/*");
-        sharingIntent.putExtra(Intent.EXTRA_TITLE,mStoryDetailFragment.getTitle());
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, mStoryDetailFragment.shareText());
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, "");
 
-        startActivity(Intent.createChooser(sharingIntent, "分享新闻到.."));
+        String imgUrl = mStoryDetailFragment.getmStoryImg();
+
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                try {
+                    File f = new File(Environment.getExternalStoragePublicDirectory(
+                            Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".png");
+
+                    System.out.println(f.getAbsolutePath());
+
+                    f.createNewFile();
+                    System.out.println("Creat");
+                    FileOutputStream out = new FileOutputStream(f);
+                    System.out.println("Open");
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                    System.out.println("Write");
+                    out.flush();
+                    out.close();
+
+                    String fileUrl;
+                    fileUrl = f.getAbsolutePath();
+
+//                    Toast.makeText(StoryDetailActivity.this, "图片已保存到" + fileUrl, Toast.LENGTH_SHORT).show();
+
+                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+
+                    sharingIntent.setType("image/*");
+                    sharingIntent.putExtra(Intent.EXTRA_TITLE, mStoryDetailFragment.getTitle());
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, mStoryDetailFragment.shareText());
+                    sharingIntent.putExtra("Kdescription", mStoryDetailFragment.shareText());
+
+                    Uri uri = Uri.fromFile(f);
+
+                    sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                    startActivity(Intent.createChooser(sharingIntent, "分享新闻到.."));
+
+                    f.deleteOnExit();
+
+                } catch (Exception e) {
+                    System.out.println("save and share: " + e);
+                    ActivityCompat.requestPermissions(StoryDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+            }
+        };
+
+        Picasso picasso = Picasso.with(StoryDetailActivity.this);
+        picasso.load(imgUrl).into(target);
     }
 
     public void fav(MenuItem it) {

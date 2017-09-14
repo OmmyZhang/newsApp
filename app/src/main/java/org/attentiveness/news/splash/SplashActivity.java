@@ -9,6 +9,8 @@ import android.view.WindowManager;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
+import org.attentiveness.news.globalSetting.GlobalSetting;
+import org.attentiveness.news.globalSetting.JSONStore;
 import org.attentiveness.news.list.StoryListActivity;
 
 import butterknife.ButterKnife;
@@ -24,8 +26,8 @@ public class SplashActivity extends BaseActivity{
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
 
-        //JSONStore dataLoader = new JSONStore(GlobalSetting.getINSTANCE());
-        //dataLoader.loadSettings().getINSTANCE();
+        JSONStore dataLoader = new JSONStore(this);
+        GlobalSetting.setINSTANCE(dataLoader.loadSettings());
 
         init();
     }

@@ -5,6 +5,7 @@ package org.attentiveness.news.net;
  */
 
 import org.attentiveness.news.data.StoryDetail;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,10 +25,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.attentiveness.news.data.StoryDetail;
-import org.attentiveness.news.globalSetting.GlobalSetting;
-import org.json.*;
 
 public class GetNews {
     final private static String BASE_URL = "http://166.111.68.66:2042/news/action/query/";
@@ -164,6 +161,7 @@ public class GetNews {
 
         if (jo.has("news_Category"))
             return new StoryDetail(
+                    jo.getString("news_ID"),
                     jo.getString("news_Title"),
                     jo.getString("news_Category"),
                     jo.getString("news_Content"),
@@ -171,6 +169,7 @@ public class GetNews {
                     jo.getJSONArray("seggedPListOfContent").getString(0));
         else
             return new StoryDetail(
+                    jo.getString("news_ID"),
                     jo.getString("news_Title"),
                     "",
                     jo.getString("news_Content"),

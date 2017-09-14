@@ -176,8 +176,8 @@ public class StoryListActivity extends BaseActivity {
                 builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //mDataStore = new JSONStore(GlobalSetting.getINSTANCE());
-                        //mDataStore.saveToLocal();
+                        mDataStore = new JSONStore(StoryListActivity.this);
+                        mDataStore.saveSettings();
                         finish();
                     }
                 });
