@@ -18,6 +18,7 @@ import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.Story;
 import org.attentiveness.news.detail.StoryDetailActivity;
+import org.attentiveness.news.globalSetting.JSONStore;
 import org.attentiveness.news.util.DateUtil;
 
 import java.util.List;
@@ -175,12 +176,16 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
     @Override
     public void showStoryList(List<Story> storyList) {
         this.mStoriesView.setVisibility(View.VISIBLE);
+        JSONStore listSaver = new JSONStore(getActivity());
+        listSaver.saveList(storyList);
         this.mStoriesAdapter.setItemList(storyList);
     }
 
     @Override
     public void appendStoryList(List<Story> storyList) {
         this.mStoriesView.setVisibility(View.VISIBLE);
+        //JSONStore listSaver = new JSONStore(getActivity());
+        //listSaver.saveList(storyList);
         this.mStoriesAdapter.addItemList(storyList);
     }
 

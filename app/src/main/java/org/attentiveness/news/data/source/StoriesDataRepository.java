@@ -1,15 +1,19 @@
 package org.attentiveness.news.data.source;
 
+import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import org.attentiveness.news.data.Story;
 import org.attentiveness.news.data.StoryDetail;
+import org.attentiveness.news.globalSetting.JSONStore;
+import org.attentiveness.news.list.StoryListFragment;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -57,11 +61,20 @@ public class StoriesDataRepository implements StoriesDataSource {
         }
         Observable<List<Story>> remoteStoryList;
         remoteStoryList = this.getAndSaveStoryListFromRemote(date);
+        Observable<List<Story>> localStoryList;
+        localStoryList = new Observable<List<Story>>() {
+            @Override
+            protected void subscribeActual(Observer<? super List<Story>> observer) {
+                Looper.prepare();
+                JSONStore listLoader = new JSONStore(StoryListFragment.newInstance("").getActivity());
+                List<Story> storyList = listLoader.loadList();
+                observer.onNext(storyList);
+            }
+        };
         if (this.mCacheIsDirty) {
             return remoteStoryList;
         } else {
-            Observable<List<Story>> localStoryList = null;
-            //localStoryList = this.getAndSaveStoryListFromLocal(date);
+
             return Observable.concat(localStoryList, remoteStoryList)
                     .filter(new Predicate<List<Story>>() {
                         @Override

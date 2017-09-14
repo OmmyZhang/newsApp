@@ -53,6 +53,8 @@ public class GlobalSetting {
         readToday.add(id);
     }
 
+    public Set<String> getReadToday () { return readToday; }
+
     public static GlobalSetting getINSTANCE() {
         if(INSTANCE == null)
             INSTANCE = new GlobalSetting();

@@ -1,7 +1,6 @@
 package org.attentiveness.news.detail;
 
 import android.Manifest;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -20,7 +19,6 @@ import com.squareup.picasso.Target;
 
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseActivity;
-import org.attentiveness.news.data.Story;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
@@ -30,15 +28,9 @@ import org.attentiveness.news.list.StoryListFragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.BindDrawable;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class StoryDetailActivity extends BaseActivity {
 
@@ -110,6 +102,15 @@ public class StoryDetailActivity extends BaseActivity {
         it_fav.setIcon(fav_ed ? ic_fav_yes : ic_fav_no);
 
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

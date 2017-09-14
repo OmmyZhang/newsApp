@@ -19,7 +19,7 @@
     <string name="iv_content_description">Img</string>
 
     <string name="tv_news">News</string>
-    <string name="tv_loading_error">Loading Error</string>
+    <string name="tv_loading_error">Network Error</string>
 
     <string name="search">搜索</string>
     <string name="night_mode">夜间模式</string>

@@ -25,6 +25,7 @@ import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.globalSetting.JSONStore;
 import org.attentiveness.news.setting.MySettingActivity;
 import org.attentiveness.news.util.DateUtil;
@@ -59,8 +60,8 @@ public class StoryListActivity extends BaseActivity {
 
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
-        StoryListPresenter newListPresenter= new StoryListPresenter(repository, newsListFragment);
-        YouMayLikePresenter youMayLikePresenter = new YouMayLikePresenter(repository, newMayLikeFragement);
+        StoryListPresenter newListPresenter= new StoryListPresenter(repository, newsListFragment, this);
+        YouMayLikePresenter youMayLikePresenter = new YouMayLikePresenter(repository, newMayLikeFragement, this);
 
 
         mVP = (ViewPager) findViewById(R.id.vpg);
@@ -86,6 +87,8 @@ public class StoryListActivity extends BaseActivity {
                 Intent intent = new Intent(StoryListActivity.this, SearchActivity.class);
                 intent.putExtra("key_word", query);
                 startActivity(intent);
+                mSearchView.onActionViewCollapsed();
+                mSearchView.clearFocus();
                 return false;
             }
 
@@ -131,8 +134,12 @@ public class StoryListActivity extends BaseActivity {
                     case R.id.nav_news_list:
                         //do nothing
                         break;
-                    case R.id.nav_feedback:
+                    case R.id.nav_feedback:{
+                        JSONStore del = new JSONStore(StoryListActivity.this);
+                        GlobalSetting.getINSTANCE().resetReadRecord();
+                        del.deleteSettings();
                         break;
+                    }
                     case R.id.nav_about:
                     {
                         AlertDialog.Builder builder = new AlertDialog.Builder(StoryListActivity.this);
@@ -179,8 +186,6 @@ public class StoryListActivity extends BaseActivity {
                 builder.setPositiveButton("是的", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        mDataStore = new JSONStore(StoryListActivity.this);
-                        mDataStore.saveSettings();
                         finish();
                     }
                 });
@@ -198,6 +203,13 @@ public class StoryListActivity extends BaseActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        mDataStore = new JSONStore(StoryListActivity.this);
+        mDataStore.saveSettings();
     }
 
     public void refresh(MenuItem it)

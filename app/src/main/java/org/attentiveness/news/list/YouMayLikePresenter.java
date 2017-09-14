@@ -1,5 +1,6 @@
 package org.attentiveness.news.list;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.attentiveness.news.data.Story;
@@ -35,8 +36,8 @@ public class YouMayLikePresenter extends StoryListPresenter {
     private boolean mFirstLoad = true;
 
 
-    YouMayLikePresenter(@NonNull StoriesDataRepository repository, @NonNull StoryListContract.View view) {
-        super(repository, view);
+    YouMayLikePresenter(@NonNull StoriesDataRepository repository, @NonNull StoryListContract.View view, Context context) {
+        super(repository, view, context);
         mRepository = repository;
         mNewsListView = view;
         mNewsListView.setPresenter(this);

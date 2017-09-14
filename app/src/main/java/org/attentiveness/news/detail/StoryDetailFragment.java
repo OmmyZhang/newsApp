@@ -18,7 +18,6 @@ import com.squareup.picasso.Picasso;
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.StoryDetail;
-import org.attentiveness.news.globalSetting.JSONStore;
 
 import java.util.regex.Pattern;
 
@@ -150,8 +149,8 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         Pattern words = storyDetail.getNames();
         Linkify.addLinks(contentText, words, "https://baike.baidu.com/item/");
 
-        JSONStore newsSaver = new JSONStore(getActivity());
-        newsSaver.saveNews(storyDetail);
+        //JSONStore newsSaver = new JSONStore(getActivity());
+        //newsSaver.saveNews(storyDetail);
 
     }
 

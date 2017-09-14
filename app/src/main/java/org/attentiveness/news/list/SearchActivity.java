@@ -36,7 +36,7 @@ public class SearchActivity extends StoryListActivity {
         mSearchFragment = SearchFragment.newInstance(keyWord);
         StoriesDataRepository repository = StoriesDataRepository.getInstance(
                 RemoteStoriesDataSource.getInstance(this), LocalStoriesDataSource.getInstance(this));
-        StoryListPresenter storyListPresenter = new StoryListPresenter(repository, mSearchFragment);
+        StoryListPresenter storyListPresenter = new StoryListPresenter(repository, mSearchFragment, this);
 
         addFragment(getSupportFragmentManager(), R.id.vpg_container, mSearchFragment);
 
