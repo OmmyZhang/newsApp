@@ -18,6 +18,7 @@ import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.Story;
 import org.attentiveness.news.detail.StoryDetailActivity;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.util.DateUtil;
 
 import java.util.List;
@@ -48,6 +49,8 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
     private String mOriginalDate;
     private String mDate;
     private int mLoadingCount;
+
+    private LinearLayoutManager linearLayoutManager;
 
     private boolean needRefresh = true;
 
@@ -80,7 +83,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         View rootView = inflater.inflate(R.layout.fragment_story_list, container, false);
         ButterKnife.bind(this, rootView);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager = new LinearLayoutManager(getActivity());
         this.mStoriesView.setLayoutManager(linearLayoutManager);
         this.mStoriesView.setAdapter(this.mStoriesAdapter);
 
@@ -109,8 +112,12 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
             public void onRefresh() {
                 mLoadingCount = 0;
                 mDate = mOriginalDate;
-                mLoadMoreListener.refreshed();
-                mPresenter.loadNewsList(mDate, false, false);
+                if(linearLayoutManager.getItemCount() <= linearLayoutManager.getChildCount())
+                    mPresenter.loadNewsList(mDate,false,true);
+                else {
+                    mLoadMoreListener.refreshed();
+                    mPresenter.loadNewsList(mDate, false, false);
+                }
             }
         });
 

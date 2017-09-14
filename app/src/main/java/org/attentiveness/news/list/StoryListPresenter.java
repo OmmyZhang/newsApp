@@ -62,7 +62,7 @@ class StoryListPresenter implements StoryListContract.Presenter {
         if(!append) {
             System.out.println("INIT_GetNews");
 
-            GetNews.newINSTANCE(GlobalSetting.getINSTANCE().getInterestedClass() , GlobalSetting.getINSTANCE().getNotShow(), 150);
+            GetNews.newINSTANCE(GlobalSetting.getINSTANCE().getInterestedClass() , GlobalSetting.getINSTANCE().getNotShow(), 250);
 
             System.out.println("interested: " + GlobalSetting.getINSTANCE().getInterestedClass());
 

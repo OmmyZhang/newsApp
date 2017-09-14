@@ -9,6 +9,43 @@
 <!--
     <include layout="@layout/app_bar"/>
 -->
-    <include layout="@layout/choose_class_tag"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_vertical_margin">
+
+    <include layout="@layout/choose_class_tag" />
+
+        <Switch
+            android:id="@+id/sw_other_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加入少量未关注话题内容"
+            android:textSize="15sp"
+            android:switchPadding="20dp"/>
+        <Switch
+            android:id="@+id/sw_auto_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="推荐列表自动刷新"
+            android:textSize="15sp"
+            android:switchPadding="20dp"/>
+        <Switch
+            android:id="@+id/sw_no_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开启无图模式"
+            android:textSize="15sp"
+            android:switchPadding="20dp"/>
+        <Switch
+            android:id="@+id/sw_backtage_voice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="允许后台朗读"
+            android:textSize="15sp"
+            android:switchPadding="20dp"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

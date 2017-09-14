@@ -23,7 +23,7 @@
 
     <string name="search">搜索</string>
     <string name="night_mode">夜间模式</string>
-    <string name="no_picture">无图模式</string>
+    <string name="clear_history">清空阅读记录</string>
     <string name="flash">刷新</string>
     <string name="read">朗读</string>
     <string name="share">分享</string>

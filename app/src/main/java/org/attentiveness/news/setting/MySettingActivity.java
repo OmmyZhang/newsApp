@@ -2,7 +2,9 @@ package org.attentiveness.news.setting;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,11 +15,12 @@ import org.attentiveness.news.globalSetting.GlobalSetting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MySettingActivity extends BaseActivity {
+public class MySettingActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
 
     List<String> list;
     final String[] classTags = {"科技", "教育", "军事", "国内", "社会", "文化", "汽车", "国际", "体育", "财经", "健康", "娱乐"};
@@ -28,6 +31,15 @@ public class MySettingActivity extends BaseActivity {
     LinearLayout l2;
     @BindView(R.id.linearLayout3)
     LinearLayout l3;
+
+    @BindView(R.id.sw_other_class)
+    Switch otherClass;
+    @BindView(R.id.sw_auto_refresh)
+    Switch autoRefresh;
+    @BindView(R.id.sw_no_picture)
+    Switch noPicture;
+    @BindView(R.id.sw_backtage_voice)
+    Switch backtageVoice;
 
 
     private List<LinearLayout> linearLayout;
@@ -51,6 +63,16 @@ public class MySettingActivity extends BaseActivity {
         setTitle("设置");
         toast = Toast.makeText(this, "", Toast.LENGTH_SHORT);
 
+        otherClass.setOnCheckedChangeListener(this);
+        autoRefresh.setOnCheckedChangeListener(this);
+        noPicture.setOnCheckedChangeListener(this);
+        backtageVoice.setOnCheckedChangeListener(this);
+
+        otherClass.setChecked(GlobalSetting.getINSTANCE().isAllowOtherClass());
+        autoRefresh.setChecked(GlobalSetting.getINSTANCE().isAutoRefreshMayLike());
+        noPicture.setChecked(GlobalSetting.getINSTANCE().isNoPicture());
+        backtageVoice.setChecked(GlobalSetting.getINSTANCE().isAllowBackstageVoice());
+
 //        setup(R.drawable.ic_menu);
     }
 
@@ -65,9 +87,8 @@ public class MySettingActivity extends BaseActivity {
 
             view.setTag(fo);
             tv.setEnabled(fo);
-            // 设置view的点击事件，与onClick中的View一致
-            //否则需要在onClick中，去findViewById，找出设置点击事件的控件进行操作
-            //若不如此，则无法触发点击事件
+
+
             view.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -92,6 +113,24 @@ public class MySettingActivity extends BaseActivity {
                 }
             });
             linearLayout.get(i / 5).addView(view);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        switch (compoundButton.getId()) {
+            case R.id.sw_other_class:
+                GlobalSetting.getINSTANCE().setAllowOtherClass(b);
+                break;
+            case R.id.sw_auto_refresh:
+                GlobalSetting.getINSTANCE().setAutoRefreshMayLike(b);
+                break;
+            case R.id.sw_no_picture:
+                GlobalSetting.getINSTANCE().setNoPicture(b);
+                break;
+            case R.id.sw_backtage_voice:
+                GlobalSetting.getINSTANCE().setAllowBackstageVoice(b);
+                break;
         }
     }
 }

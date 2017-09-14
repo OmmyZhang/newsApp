@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 import org.attentiveness.news.R;
 import org.attentiveness.news.base.BaseFragment;
 import org.attentiveness.news.data.StoryDetail;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.globalSetting.JSONStore;
 
 import java.util.regex.Pattern;
@@ -134,11 +135,16 @@ public class StoryDetailFragment extends BaseFragment implements StoryDetailCont
         if (content.charAt(0) != '　')
             content = "　　" + content;
 
-        Picasso.with(mContext)
-                .load(mStoryImg)
-                .placeholder(R.drawable.ic_image_black_24dp)
-                .error(R.drawable.ic_broken_image_black_24dp)
-                .into(detailImage);
+        if (!GlobalSetting.getINSTANCE().isNoPicture()) {
+            detailImage.setVisibility(View.VISIBLE);
+            Picasso.with(mContext)
+                    .load(mStoryImg)
+                    .placeholder(R.drawable.ic_image_black_24dp)
+                    .error(R.drawable.ic_broken_image_black_24dp)
+                    .into(detailImage);
+        }
+        else
+            detailImage.setVisibility(View.GONE);
 
         titleText.setText(storyDetail.getTitle());
         categoryText.setText(storyDetail.getCategory());

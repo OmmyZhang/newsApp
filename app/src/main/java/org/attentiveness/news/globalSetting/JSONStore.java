@@ -40,7 +40,7 @@ public class JSONStore extends BaseActivity{
 
     public void saveSettings() {
         mData = gson.toJson(mGlobalSetting.getINSTANCE(), GlobalSetting.class);
-        System.out.println("save mData: "+mData);
+//        System.out.println("save mData: "+mData);
         FileOutputStream outputStream;
         try {
             outputStream = mContext.openFileOutput(DATA_PATH, Context.MODE_PRIVATE);
@@ -77,7 +77,7 @@ public class JSONStore extends BaseActivity{
         try {
             outputStream = mContext.openFileOutput(storyDetail.getId(), Context.MODE_PRIVATE);
             String detailJson = gson.toJson(storyDetail, StoryDetail.class);
-            System.out.println("news data: "+detailJson);
+//            System.out.println("news data: "+detailJson);
             byte[] bytes = detailJson.getBytes();
             outputStream.write(bytes);
             outputStream.close();

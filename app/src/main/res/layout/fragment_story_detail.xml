@@ -48,6 +48,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp"
             android:textColor="@color/story_detail_color"
+            android:textColorLink="#50a0ff"
             android:typeface="serif"
             android:layout_margin="30sp"/>
 

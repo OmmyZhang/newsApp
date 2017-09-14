@@ -69,84 +69,91 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
             intro = intro.substring(1);
         introView.setText(intro);
 
-        Observable<String> ob = new Observable<String>() {
-            @Override
-            protected void subscribeActual(Observer<? super String> observer) {
-                try {
-                    String iu;
-                    if (imageUrl.substring(0, 7).equals("baidu::"))
-                        iu = GetNews.getINSTANCE().findPicture(imageUrl.substring(7));
-                    else
-                        iu = imageUrl;
-                    observer.onNext(iu);
-                } catch (Exception e) {
-                    observer.onError(e);
-                } finally {
-                    observer.onComplete();
+        if (!GlobalSetting.getINSTANCE().isNoPicture()) {
+            Observable<String> ob = new Observable<String>() {
+                @Override
+                protected void subscribeActual(Observer<? super String> observer) {
+                    try {
+                        String iu;
+                        if (imageUrl.substring(0, 7).equals("baidu::"))
+                            iu = GetNews.getINSTANCE().findPicture(imageUrl.substring(7));
+                        else
+                            iu = imageUrl;
+                        observer.onNext(iu);
+                    } catch (Exception e) {
+                        observer.onError(e);
+                    } finally {
+                        observer.onComplete();
+                    }
+
                 }
+            };
+            ob.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<String>() {
+                        private String s2 = "mf", s1 = "mf";
 
-            }
-        };
-        ob.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
-                    private String s2 = "mf", s1 = "mf";
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
-
-                    @Override
-                    public void onNext(String s) {
-                        if (s.substring(0, 5).equals("baidu")) {
-                            s1 = s.split(";")[1];
-                            s2 = s.split(";")[2];
-                        } else
-                            s1 = s;
-                        story.setImage(s1);
-                        Picasso.with(holder.mImageView.getContext())
-                                .load(s1)
-                                .placeholder(R.drawable.ic_image_black_24dp)
-                                .into(imageView, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        if (s2.equals("mf")) {
-                                            story.setImage("baidu::" + story.getTitle());
-                                            onBindViewHolder(holder, position);
-                                        } else {
-                                            story.setImage(s2);
-                                            Picasso.with(holder.mImageView.getContext())
-                                                    .load(s2)
-                                                    .placeholder(R.drawable.ic_image_black_24dp)
-                                                    .error(R.drawable.ic_broken_image_black_24dp)
-                                                    .into(imageView);
+                        @Override
+                        public void onNext(String s) {
+                            if (s.substring(0, 5).equals("baidu")) {
+                                s1 = s.split(";")[1];
+                                s2 = s.split(";")[2];
+                            } else
+                                s1 = s;
+                            story.setImage(s1);
+                            Picasso.with(holder.mImageView.getContext())
+                                    .load(s1)
+                                    .placeholder(R.drawable.ic_image_black_24dp)
+                                    .into(imageView, new Callback() {
+                                        @Override
+                                        public void onSuccess() {
                                         }
-                                    }
-                                });
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        System.out.println("baidu img: " + e);
-                    }
+                                        @Override
+                                        public void onError() {
+                                            if (s2.equals("mf")) {
+                                                story.setImage("baidu::" + story.getTitle());
+                                                onBindViewHolder(holder, position);
+                                            } else {
+                                                story.setImage(s2);
+                                                Picasso.with(holder.mImageView.getContext())
+                                                        .load(s2)
+                                                        .placeholder(R.drawable.ic_image_black_24dp)
+                                                        .error(R.drawable.ic_broken_image_black_24dp)
+                                                        .into(imageView);
+                                            }
+                                        }
+                                    });
+                        }
 
-                    @Override
-                    public void onComplete() {
-                    }
-                });
+                        @Override
+                        public void onError(Throwable e) {
+                            System.out.println("baidu img: " + e);
+                        }
 
-        if(GlobalSetting.getINSTANCE().ifRead(story.getId()))
-        {
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }
+        else
+            Picasso.with(holder.mImageView.getContext())
+                    .load(R.drawable.ic_image_black_24dp)
+                    .error(R.drawable.ic_image_black_24dp)
+                    .into(imageView);
+
+        if (GlobalSetting.getINSTANCE().ifRead(story.getId())) {
 
             holder.mTitleView.setTextColor(Color.GRAY);
             holder.mIntroView.setTextColor(Color.GRAY);
             holder.mImageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.LIGHTEN);
-        }
-        else {
+        } else {
+            holder.mTitleView.setTextColor(res.getColor(R.color.story_text_color));
+            holder.mIntroView.setTextColor(res.getColor(R.color.story_text_color));
             imageView.clearColorFilter();
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -25,6 +25,7 @@ import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.globalSetting.JSONStore;
 import org.attentiveness.news.setting.MySettingActivity;
 import org.attentiveness.news.util.DateUtil;
@@ -96,15 +97,7 @@ public class StoryListActivity extends BaseActivity {
         });
         final MenuItem mode = menu.findItem(R.id.night_mode);
         mode.setChecked(nightMode);
-        /*mode.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                menuItem.setChecked(!menuItem.isChecked());
-                return false;
-            }
-        });*/
-        boolean modef = !mode.isChecked();
-        //SkinManager.getInstance().changeSkin(modef ? "night" : "");
+
         return true;
     }
 
@@ -202,11 +195,14 @@ public class StoryListActivity extends BaseActivity {
 
     public void refresh(MenuItem it)
     {
-        //addFragment(getSupportFragmentManager(), R.id.search_layout, searchFragement);
-        //newsListFragment.refresh_from_menu();
-        //newMayLikeFragement.refresh_from_menu();
-
         spa.getCurrentFragment().refresh_from_menu();
+    }
+
+    public void clear(MenuItem it)
+    {
+        newMayLikeFragement.refresh_from_menu();
+        newsListFragment.refresh_from_menu();
+        GlobalSetting.getINSTANCE().clearReadRecord();
     }
 
     public void setNightMode(MenuItem it)
