@@ -66,7 +66,7 @@ public class HttpManager {
                     if (list == null)
                         sL.add(new Story("", "没有更多啦~", "",""));
                     else if (list.size() == 0)
-                        sL.add(new Story("", "都被滤掉啦~","","继续刷新或者减少敏感词吧"));
+                        sL.add(new Story("", "都被滤掉啦~","","下拉加载更多或者关注更多话题并减少敏感词吧"));
                     else
                         for (HashMap e : list) {
                             sL.add(new Story((String) e.get("news_ID"),

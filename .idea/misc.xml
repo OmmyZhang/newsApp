@@ -27,9 +27,19 @@
       </value>
     </option>
   </component>
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
 =======
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="JDK" project-jdk-type="JavaSDK" />
 >>>>>>> Stashed changes
+=======
+<<<<<<< HEAD
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8 (1)" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+=======
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+>>>>>>> a68b1b1e8cf3c0d95f7def55da3ca7e4b556646b
+>>>>>>> 415f007abd739520755dec7bab802747fe619f84
 </project>

@@ -16,19 +16,19 @@ public class GlobalSetting {
 
     private boolean allowBackstageVoice = true;
     private boolean noPicture = false;
-    private boolean nightMode = false;
     private boolean allowOtherClass = true;
     private boolean autoRefreshMayLike = false;
 
-    private Map<String,Double>  readRecord;
+    private Map<String, Double> readRecord;
     private Set<String> notShow;
     private Set<String> interestedClass;
 
     private Set<String> readToday;
 
-    private GlobalSetting()
-    {
-        readRecord = new HashMap<String,Double>();
+    private Set<String> favStoryId;
+
+    private GlobalSetting() {
+        readRecord = new HashMap<String, Double>();
 
         readToday = new HashSet<String>();
 
@@ -40,23 +40,22 @@ public class GlobalSetting {
 //            ct.add("国际");
 //            ct.add("文化");
 
-        notShow = new HashSet<String>();
+        notShow = new HashSet<>();
+        favStoryId = new HashSet<>();
     }
 
-    public boolean ifRead(String id)
-    {
+    public boolean ifRead(String id) {
         return readToday.contains(id);
     }
 
-    public void readIt(String id)
-    {
+    public void readIt(String id) {
         readToday.add(id);
     }
 
     public Set<String> getReadToday () { return readToday; }
 
     public static GlobalSetting getINSTANCE() {
-        if(INSTANCE == null)
+        if (INSTANCE == null)
             INSTANCE = new GlobalSetting();
         return INSTANCE;
     }
@@ -65,77 +64,88 @@ public class GlobalSetting {
         INSTANCE = loader;
     }
 
-    public boolean isAllowOtherClass(){
+    public boolean isAllowOtherClass() {
         return allowOtherClass;
     }
 
-    public boolean isAllowBackstageVoice(){
-        return  allowBackstageVoice;
+    public void setAllowOtherClass(boolean b){
+        allowOtherClass = b;
     }
 
-    public void setAllowBackstageVoice(){
-        allowBackstageVoice = !allowBackstageVoice;
+    public boolean isAllowBackstageVoice() {
+        return allowBackstageVoice;
     }
 
-    public void resetReadRecord()
-    {
-        readRecord = new HashMap<String,Double>();
+    public void setAllowBackstageVoice(boolean b) {
+        allowBackstageVoice = b;
     }
 
-    public Map<String, Double> getReadRecord() { return readRecord; }
+    public void clearReadRecord() {
+        readRecord = new HashMap<String, Double>();
+        readToday = new HashSet<String>();
+    }
 
-    public Set<String> getInterestedClass(){
+    public Map<String, Double> getReadRecord() {
+        return readRecord;
+    }
+
+    public Set<String> getInterestedClass() {
         return interestedClass;
     }
 
-    public Set<String> getNotShow()
-    {
+    public Set<String> getNotShow() {
         return notShow;
     }
 
-    public void setNotShow(Set<String> notShow)
-    {
+    public void setNotShow(Set<String> notShow) {
         this.notShow = notShow;
     }
 
-    public void updateReadRecord(String word,double w)
-    {
-        if(readRecord.containsKey(word))
-            readRecord.put(word,readRecord.get(word) + w);
+    public void updateReadRecord(String word, double w) {
+        if (readRecord.containsKey(word))
+            readRecord.put(word, readRecord.get(word) + w);
         else
-            readRecord.put(word,w);
+            readRecord.put(word, w);
     }
 
-    public void setNoPicture()
-    {
-        noPicture = ! noPicture;
-        //
+    public void setNoPicture(boolean b) {
+        noPicture = b;
     }
 
-    public void setNightMode()
-    {
-        nightMode = !nightMode;
-        //
+    public boolean isNoPicture() {
+        return noPicture;
     }
 
     public boolean isAutoRefreshMayLike() {
         return autoRefreshMayLike;
     }
 
-    public void setAutoRefreshMayLike(){
-        autoRefreshMayLike = !autoRefreshMayLike;
+    public void setAutoRefreshMayLike(boolean b) {
+        autoRefreshMayLike = b;
     }
 
-    public boolean checkClassTag(String classTag){
+    public boolean checkClassTag(String classTag) {
         return interestedClass.contains(classTag);
     }
 
-    public void addClassTag(String classTag){
+    public void addClassTag(String classTag) {
         interestedClass.add(classTag);
     }
 
-    public void delClassTag(String classTag){
+    public void delClassTag(String classTag) {
         interestedClass.remove(classTag);
+    }
+
+    public boolean isFav(String sId) {
+        return favStoryId.contains(sId);
+    }
+
+    public void addFavStoryId(String sId) {
+        favStoryId.add(sId);
+    }
+
+    public void delFavStoryId(String sId) {
+        favStoryId.remove(sId);
     }
 
 }

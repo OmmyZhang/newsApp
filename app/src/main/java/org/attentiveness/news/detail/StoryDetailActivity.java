@@ -88,7 +88,7 @@ public class StoryDetailActivity extends BaseActivity {
             }
         });
 
-        fav_ed = false; // 这里应该检查是否已经被收藏了
+        fav_ed = GlobalSetting.getINSTANCE().isFav(mStoryId);
 
         setTitle("新闻详情");
     }
@@ -187,10 +187,10 @@ public class StoryDetailActivity extends BaseActivity {
         it.setIcon(fav_ed ? ic_fav_yes : ic_fav_no);
         if (fav_ed) {
             Toast.makeText(StoryDetailActivity.this, "已加入收藏", Toast.LENGTH_SHORT).show();
-            //加入收藏
+            GlobalSetting.getINSTANCE().addFavStoryId(mStoryId);
         } else {
             Toast.makeText(StoryDetailActivity.this, "已取消收藏", Toast.LENGTH_SHORT).show();
-            //从收藏中删除
+            GlobalSetting.getINSTANCE().delFavStoryId(mStoryId);
         }
     }
 
