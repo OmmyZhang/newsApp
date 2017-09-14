@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.attentiveness.news.list.ScrollChildSwipeRefreshLayout
+<com.java.group11.list.ScrollChildSwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_search_fresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cv_initial_background"
-    tools:context="org.attentiveness.news.list.SearchFragment">
+    tools:context="org.java.group11.com.java.group11.list.SearchFragment">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/search_layout"
@@ -19,4 +19,4 @@
             android:layout_height="wrap_content" />
 
     </FrameLayout>
-</org.attentiveness.news.list.ScrollChildSwipeRefreshLayout>
+</com.java.group11.list.ScrollChildSwipeRefreshLayout>

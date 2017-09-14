@@ -5,14 +5,14 @@ android {
         config {
             keyAlias 'news_key'
             keyPassword 'news_app'
-            storeFile file('/home/zhangyn/as_key/news.jks')
+            storeFile file('/home/zhangyn/as_key/com.java.com.group11.jks')
             storePassword 'news_app'
         }
     }
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "org.attentiveness.news"
+        applicationId "org.java.com.java.com.group11"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 1

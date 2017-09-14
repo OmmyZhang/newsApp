@@ -4,7 +4,7 @@
     android:id="@+id/fl_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.attentiveness.news.detail.StoryDetailFragment">
+    tools:context="org.java.group11.com.java.group11.detail.StoryDetailFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

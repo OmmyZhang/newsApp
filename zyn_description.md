@@ -2,7 +2,7 @@
 
 + 新闻素材的获取
 
-  *GetNews类* (org.attentiveness.news.net.GetNews)
+  *GetNews类* (group11.net.GetNews)
 
   提供接口
 

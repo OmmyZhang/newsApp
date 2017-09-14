@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.attentiveness.news">
+    package="org.java.group11">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".splash.SplashActivity"
+            android:name="org.java.com.java.group11.splash.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,24 +23,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".list.StoryListActivity"
+            android:name="org.java.com.java.group11.list.StoryListActivity"
             android:label="@string/title_activity_story_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".detail.StoryDetailActivity"
+            android:name="org.java.com.java.group11.detail.StoryDetailActivity"
             android:label="@string/title_activity_story_detail"
-            android:parentActivityName=".list.StoryListActivity"
+            android:parentActivityName="org.java.com.java.group11.list.StoryListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".list.StoryListActivity" />
+                android:value="org.java.com.java.group11.list.StoryListActivity" />
         </activity>
         <activity
-            android:name=".list.SearchActivity"
+            android:name="org.java.com.java.group11.list.SearchActivity"
             android:label="Search"
-            android:parentActivityName=".list.StoryListActivity"
+            android:parentActivityName="org.java.com.java.group11.list.StoryListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".setting.MySettingActivity"></activity>
+        <activity android:name="org.java.com.java.group11.setting.MySettingActivity"></activity>
     </application>
 
 </manifest>

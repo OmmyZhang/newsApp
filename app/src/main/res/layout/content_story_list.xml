@@ -7,6 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.attentiveness.news.list.StoryListActivity">
+    tools:context="org.java.group11.com.java.group11.list.StoryListActivity">
 
 </FrameLayout>

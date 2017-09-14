@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="org.attentiveness.news.splash.SplashActivity">
+    tools:context="org.java.group11.com.java.group11.splash.SplashActivity">
 
     <TextView
         android:layout_width="wrap_content"

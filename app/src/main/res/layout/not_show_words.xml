@@ -14,13 +14,13 @@
         android:text="屏蔽词："
         android:textSize="20sp"
         android:textColor="@color/setting_title"/>
-    <org.attentiveness.news.setting.Flowlayout
+    <com.java.group11.setting.Flowlayout
         android:id="@+id/tag_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
         android:layout_marginTop="20dp">
-    </org.attentiveness.news.setting.Flowlayout>
+    </com.java.group11.setting.Flowlayout>
 
     <Button
         android:id="@+id/btn_sure"
