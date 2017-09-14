@@ -12,6 +12,7 @@
     <color name="fl_initial_background">#212121</color>
 
     <color name="tab_text_color">#a5FFFFFF</color>
+    <color name="tab_color">#66212121</color>
 
     <color name="story_text_color">#A2A2A2</color>
     <color name="story_detail_color">#EEEEEE</color>
@@ -19,4 +20,6 @@
 
     <color name="text_color">#A2A2A2</color>
     <color name="text_divider">#A6A6A6</color>
+
+    <color name="setting_background">#99212121</color>
 </resources>

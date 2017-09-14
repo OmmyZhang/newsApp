@@ -7,6 +7,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="关注的话题:"
+        android:textColor="@color/tab_text_color"
         android:textSize="30sp"
         android:layout_margin="10sp"/>
 

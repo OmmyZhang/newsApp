@@ -32,6 +32,7 @@ public class MySettingActivity extends BaseActivity {
         initMarksView();
         setTitle("设置");
 
+
 //        setup(R.drawable.ic_menu);
     }
 
