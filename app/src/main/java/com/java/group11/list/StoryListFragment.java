@@ -184,7 +184,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         this.mStoriesView.setVisibility(View.VISIBLE);
         JSONStore listSaver = new JSONStore(getActivity());
         listSaver.saveList(storyList);
-        System.out.println("data check: "+storyList.size());
+        //System.out.println("data check: "+storyList.size());
         this.mStoriesAdapter.setItemList(storyList);
     }
 

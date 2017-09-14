@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'news_key'
             keyPassword 'news_app'
-            storeFile file('/home/zhangyn/as_key/com.java.com.group11.jks')
+            storeFile file('C:/Users/shols/myjks.jks')
             storePassword 'news_app'
         }
     }

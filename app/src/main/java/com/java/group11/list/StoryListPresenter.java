@@ -112,7 +112,8 @@ class StoryListPresenter implements StoryListContract.Presenter {
                             public void accept(@io.reactivex.annotations.NonNull List<Story> storyList) throws Exception {
                                 JSONStore listLoader = new JSONStore(mContext);
                                 List<Story> storyLoadList = listLoader.loadList();
-                                storyList.addAll(storyLoadList);
+                                if (storyLoadList != null)
+                                    storyList.addAll(storyLoadList);
                                 if (append) {
                                     mNewsListView.appendStoryList(storyList);
                                 } else {

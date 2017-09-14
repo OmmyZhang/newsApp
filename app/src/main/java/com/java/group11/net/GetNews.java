@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GetNews {
-    final private static String BASE_URL = "http://166.111.68.66:2042/com.java.com.group11/action/query/";
+    final private static String BASE_URL = "http://166.111.68.66:2042/news/action/query/";
     static private Set<String> classTag;
     static private Set<String> notShow;
     static private GetNews INSTANCE;

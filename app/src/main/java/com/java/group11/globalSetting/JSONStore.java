@@ -121,9 +121,9 @@ public class JSONStore extends BaseActivity {
         }
         List<Story> storyList;
         storyList = gson.fromJson(detail, new TypeToken<List<Story>>(){}.getType());
-        System.out.println("data check:"+storyList.get(0));
-        Story test = storyList.get(0);
-        System.out.println("test check: "+test+test.getClass().toString());
+        //System.out.println("data check:"+storyList.get(0));
+        //Story test = storyList.get(0);
+        //System.out.println("test check: "+test+test.getClass().toString());
         return storyList;
     }
 
