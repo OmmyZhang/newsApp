@@ -107,7 +107,8 @@ public class StoryDetailActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.home) {
-            finish();
+            System.out.println("Destroy");
+            onDestroy();
             return true;
         }
         return super.onOptionsItemSelected(item);

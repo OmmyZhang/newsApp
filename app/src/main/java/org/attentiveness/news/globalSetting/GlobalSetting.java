@@ -97,8 +97,16 @@ public class GlobalSetting {
         return notShow;
     }
 
-    public void setNotShow(Set<String> notShow) {
-        this.notShow = notShow;
+    public void addNotShow(String s) {
+        notShow.add(s);
+    }
+
+    public void delNotShow(String s) {
+        notShow.remove(s);
+    }
+
+    public boolean checkNotShow(String s) {
+        return notShow.contains(s);
     }
 
     public void updateReadRecord(String word, double w) {
