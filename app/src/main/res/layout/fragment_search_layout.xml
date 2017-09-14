@@ -5,6 +5,7 @@
     android:id="@+id/rl_search_fresh_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cv_initial_background"
     tools:context="org.attentiveness.news.list.SearchFragment">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

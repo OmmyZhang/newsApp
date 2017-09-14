@@ -22,4 +22,5 @@
     <color name="text_divider">#B6B6B6</color>
 
     <color name="setting_background">#FFFFFF</color>
+    <color name="setting_title">#000000</color>
 </resources>

@@ -2,6 +2,7 @@ package org.attentiveness.news.list;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -127,9 +128,11 @@ public class StoryListActivity extends BaseActivity {
                         //do nothing
                         break;
                     case R.id.nav_feedback:{
-                        JSONStore del = new JSONStore(StoryListActivity.this);
-                        GlobalSetting.getINSTANCE().clearReadRecord();
-                        del.deleteSettings();
+//                        JSONStore del = new JSONStore(StoryListActivity.this);
+//                        del.deleteSettings();
+
+//                        GlobalSetting.getINSTANCE().clearReadRecord();
+
                         break;
                     }
                     case R.id.nav_about:
