@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:text="关注的话题:"
         android:textSize="20sp"
-        android:textColor="@color/tab_text_color"
+        android:textColor="@color/setting_title"
         android:layout_margin="10sp"/>
 
     <LinearLayout

@@ -49,7 +49,7 @@ public class StoryListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(null);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_list);
         ButterKnife.bind(this);
         setup(R.drawable.ic_menu);
@@ -127,9 +127,6 @@ public class StoryListActivity extends BaseActivity {
                         //do nothing
                         break;
                     case R.id.nav_feedback:{
-                        JSONStore del = new JSONStore(StoryListActivity.this);
-                        GlobalSetting.getINSTANCE();
-                        del.deleteSettings();
                         break;
                     }
                     case R.id.nav_about:
@@ -144,6 +141,7 @@ public class StoryListActivity extends BaseActivity {
                         break;
                     }
                     case R.id.nav_settings:
+                        newsListFragment.needRefresh = true;
                         Intent intent = new Intent(StoryListActivity.this, MySettingActivity.class);
                         startActivity(intent);
                         break;
@@ -204,6 +202,7 @@ public class StoryListActivity extends BaseActivity {
         mDataStore.saveSettings();
     }
 
+
     public void refresh(MenuItem it)
     {
         spa.getCurrentFragment().refresh_from_menu();
@@ -224,12 +223,14 @@ public class StoryListActivity extends BaseActivity {
         if(nightMode && uiMode == Configuration.UI_MODE_NIGHT_NO) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
             shared(true);
-            recreate();
         } else if(!nightMode && uiMode == Configuration.UI_MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             shared(false);
-            recreate();
         }
+        //recreate();
+        startActivity(new Intent(this,StoryListActivity.class));
+        overridePendingTransition(R.anim.alpha_in_out, R.anim.alpha_in_out);
+        finish();
     }
 
     private void shared(boolean flag){
