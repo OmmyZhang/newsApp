@@ -8,7 +8,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/text_background">
 
         <TextView
             android:id="@+id/detail_title"
@@ -16,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textColor="@android:color/black"
+            android:textColor="@color/story_detail_color"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_margin="@dimen/default_gap"/>
@@ -27,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="15sp"
             android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/story_detail_color"
             android:textSize="15sp"
             android:textStyle="italic"
             android:typeface="serif" />
@@ -45,7 +47,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp"
-            android:textColorLink="#5588cc"
+            android:textColor="@color/story_detail_color"
             android:typeface="serif"
             android:layout_margin="30sp"/>
 

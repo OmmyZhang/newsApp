@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -40,9 +43,11 @@ public class StoryListActivity extends BaseActivity {
 
     private JSONStore mDataStore;
 
+    private static boolean nightMode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         setContentView(R.layout.activity_story_list);
         ButterKnife.bind(this);
         setup(R.drawable.ic_menu);
@@ -65,6 +70,7 @@ public class StoryListActivity extends BaseActivity {
 
         spa = new SlidePagerAdapter(getSupportFragmentManager(),fList);
         mVP.setAdapter(spa);
+
     }
 
     @Override
@@ -88,13 +94,14 @@ public class StoryListActivity extends BaseActivity {
             }
         });
         final MenuItem mode = menu.findItem(R.id.night_mode);
-        mode.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        mode.setChecked(nightMode);
+        /*mode.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 menuItem.setChecked(!menuItem.isChecked());
                 return false;
             }
-        });
+        });*/
         boolean modef = !mode.isChecked();
         //SkinManager.getInstance().changeSkin(modef ? "night" : "");
         return true;
@@ -197,5 +204,28 @@ public class StoryListActivity extends BaseActivity {
         //newMayLikeFragement.refresh_from_menu();
 
         spa.getCurrentFragment().refresh_from_menu();
+    }
+
+    public void setNightMode(MenuItem it)
+    {
+        nightMode = !nightMode;
+        //it.setChecked(!it.isChecked());
+        int uiMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if(nightMode && uiMode == Configuration.UI_MODE_NIGHT_NO) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            shared(true);
+            recreate();
+        } else if(!nightMode && uiMode == Configuration.UI_MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            shared(false);
+            recreate();
+        }
+    }
+
+    private void shared(boolean flag){
+        SharedPreferences sp = getSharedPreferences("Info", MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putBoolean("Day",flag);
+        edit.commit();
     }
 }
