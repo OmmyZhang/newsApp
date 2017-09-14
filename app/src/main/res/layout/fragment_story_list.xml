@@ -14,7 +14,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_story_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textColor="@color/story_text_color"/>
 
         <TextView
             android:id="@+id/tv_loading_error"

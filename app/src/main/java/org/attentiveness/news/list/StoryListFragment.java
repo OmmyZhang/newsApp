@@ -72,7 +72,7 @@ public class StoryListFragment extends BaseFragment implements StoryListContract
         if (bundle != null && bundle.containsKey(EXTRA_DATE)) {
             this.mOriginalDate = bundle.getString(EXTRA_DATE);
         }
-
+        mStoriesAdapter.getResources(getActivity().getResources());
     }
 
     @Override

@@ -9,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.res.Resources;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.attentiveness.news.R;
+import org.attentiveness.news.base.BaseActivity;
 import org.attentiveness.news.data.Story;
 import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.net.GetNews;
@@ -39,6 +41,8 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
 
     private List<Story> mStoryList;
     private OnItemClickListener mOnItemClickListener;
+
+    private Resources res;
 
     StoryListAdapter() {
         this.mStoryList = new ArrayList<>();
@@ -137,20 +141,19 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
 
         if(GlobalSetting.getINSTANCE().ifRead(story.getId()))
         {
+
             holder.mTitleView.setTextColor(Color.GRAY);
-            holder.mIntroView.setTextColor(Color.LTGRAY);
+            holder.mIntroView.setTextColor(Color.GRAY);
             holder.mImageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.LIGHTEN);
         }
         else {
-            titleView.setTextColor(Color.DKGRAY);
-            introView.setTextColor(Color.DKGRAY);
             imageView.clearColorFilter();
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.mTitleView.setTextColor(Color.GRAY);
-                holder.mIntroView.setTextColor(Color.LTGRAY);
+                holder.mIntroView.setTextColor(Color.GRAY);
                 holder.mImageView.setColorFilter(Color.LTGRAY, PorterDuff.Mode.LIGHTEN);
                 GlobalSetting.getINSTANCE().readIt(story.getId());
                 if (mOnItemClickListener != null) {
@@ -199,6 +202,10 @@ class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.ViewHolder>
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    void getResources(Resources src) {
+        res = src;
     }
 
 }
