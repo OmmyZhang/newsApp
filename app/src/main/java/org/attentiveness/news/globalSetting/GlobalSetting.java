@@ -67,6 +67,14 @@ public class GlobalSetting {
         return allowOtherClass;
     }
 
+    public boolean isAllowBackstageVoice(){
+        return  allowBackstageVoice;
+    }
+
+    public void setAllowBackstageVoice(){
+        allowBackstageVoice = !allowBackstageVoice;
+    }
+
     public void resetReadRecord()
     {
         readRecord = new HashMap<String,Double>();
@@ -115,4 +123,17 @@ public class GlobalSetting {
     public void setAutoRefreshMayLike(){
         autoRefreshMayLike = !autoRefreshMayLike;
     }
+
+    public boolean checkClassTag(String classTag){
+        return interestedClass.contains(classTag);
+    }
+
+    public void addClassTag(String classTag){
+        interestedClass.add(classTag);
+    }
+
+    public void delClassTag(String classTag){
+        interestedClass.remove(classTag);
+    }
+
 }

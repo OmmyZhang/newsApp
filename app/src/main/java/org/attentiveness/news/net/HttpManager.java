@@ -60,13 +60,7 @@ public class HttpManager {
                 try {
                     GetNews gn = GetNews.getINSTANCE();
                     list = gn.getMore();
-/*
-                    HashMap<String,Double> readRecord = new HashMap<String,Double>();
-                    readRecord.put("清华",100.0);
-                    readRecord.put("李克强",30.0);
 
-                    list = gn.mayLike(readRecord);
-*/
                     sL = new ArrayList<Story>();
 
                     if (list == null)
@@ -86,6 +80,7 @@ public class HttpManager {
 
                     observer.onNext(sL);
                 } catch (Exception e) {
+                    System.out.println("get story list: " + e);
                     observer.onError(e);
                 } finally {
                     observer.onComplete();

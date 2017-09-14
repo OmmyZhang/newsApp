@@ -24,6 +24,7 @@ import org.attentiveness.news.data.Story;
 import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
+import org.attentiveness.news.globalSetting.GlobalSetting;
 import org.attentiveness.news.list.StoryListFragment;
 
 import java.io.File;
@@ -131,24 +132,23 @@ public class StoryDetailActivity extends BaseActivity {
 
                 try {
                     File f = new File(Environment.getExternalStoragePublicDirectory(
-                            Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".png");
+                            Environment.DIRECTORY_PICTURES), mStoryId + ".png");
 
                     System.out.println(f.getAbsolutePath());
 
-                    f.createNewFile();
-                    System.out.println("Creat");
-                    FileOutputStream out = new FileOutputStream(f);
-                    System.out.println("Open");
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                    System.out.println("Write");
-                    out.flush();
-                    out.close();
+                    if(!f.exists()) {
+                        f.createNewFile();
 
-                    String fileUrl;
-                    fileUrl = f.getAbsolutePath();
+                        System.out.println("Creat");
+                        FileOutputStream out = new FileOutputStream(f);
+                        System.out.println("Open");
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                        System.out.println("Write");
+                        out.flush();
+                        out.close();
 
-//                    Toast.makeText(StoryDetailActivity.this, "图片已保存到" + fileUrl, Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(StoryDetailActivity.this, "正在保存图片以备分享..", Toast.LENGTH_SHORT).show();
+                    }
                     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
 
                     sharingIntent.setType("image/*");
@@ -161,8 +161,6 @@ public class StoryDetailActivity extends BaseActivity {
                     sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
 
                     startActivity(Intent.createChooser(sharingIntent, "分享新闻到.."));
-
-                    f.deleteOnExit();
 
                 } catch (Exception e) {
                     System.out.println("save and share: " + e);
@@ -198,7 +196,8 @@ public class StoryDetailActivity extends BaseActivity {
     @Override
     public void onPause() {
         super.onPause();
-//        readTTS.stop();
+        if(!GlobalSetting.getINSTANCE().isAllowBackstageVoice())
+            readTTS.stop();
     }
 
     @Override
@@ -206,5 +205,16 @@ public class StoryDetailActivity extends BaseActivity {
         super.onDestroy();
         if (readTTS != null)
             readTTS.shutdown();
+
+        File f = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), mStoryId + ".png");
+
+        System.out.println(f.getAbsolutePath());
+
+        if(f.exists())
+        {
+            f.delete();
+            Toast.makeText(StoryDetailActivity.this, "已清理图片", Toast.LENGTH_SHORT).show();
+        }
     }
 }

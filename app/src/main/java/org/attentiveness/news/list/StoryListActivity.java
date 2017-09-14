@@ -23,6 +23,7 @@ import org.attentiveness.news.data.source.StoriesDataRepository;
 import org.attentiveness.news.data.source.local.LocalStoriesDataSource;
 import org.attentiveness.news.data.source.remote.RemoteStoriesDataSource;
 import org.attentiveness.news.globalSetting.JSONStore;
+import org.attentiveness.news.setting.MySettingActivity;
 import org.attentiveness.news.util.DateUtil;
 
 import java.util.ArrayList;
@@ -137,6 +138,8 @@ public class StoryListActivity extends BaseActivity {
 
                     }
                     case R.id.nav_settings:
+                        Intent intent = new Intent(StoryListActivity.this, MySettingActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         break;

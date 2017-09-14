@@ -64,6 +64,8 @@ class StoryListPresenter implements StoryListContract.Presenter {
 
             GetNews.newINSTANCE(GlobalSetting.getINSTANCE().getInterestedClass() , GlobalSetting.getINSTANCE().getNotShow(), 150);
 
+            System.out.println("interested: " + GlobalSetting.getINSTANCE().getInterestedClass());
+
         }
 
         if (showLoadingUI) {
