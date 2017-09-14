@@ -135,7 +135,7 @@ public class StoryListActivity extends BaseActivity {
 
                         AlertDialog dialog_about = builder.create();
                         dialog_about.show();
-
+                        break;
                     }
                     case R.id.nav_settings:
                         Intent intent = new Intent(StoryListActivity.this, MySettingActivity.class);

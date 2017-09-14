@@ -73,6 +73,7 @@ public class MySettingActivity extends BaseActivity implements CompoundButton.On
         noPicture.setChecked(GlobalSetting.getINSTANCE().isNoPicture());
         backtageVoice.setChecked(GlobalSetting.getINSTANCE().isAllowBackstageVoice());
 
+
 //        setup(R.drawable.ic_menu);
     }
 
