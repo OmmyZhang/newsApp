@@ -15,8 +15,6 @@ import org.attentiveness.news.util.schedulers.SchedulerProvider;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
@@ -81,38 +79,8 @@ class StoryListPresenter implements StoryListContract.Presenter {
         if (forceUpdate) {
             this.mRepository.refreshStories();
         }
-        Disposable disposable = this.mRepository.getStories(date)
-                .subscribeOn(this.mSchedulerProvider.computation())
-                .observeOn(this.mSchedulerProvider.ui())
-                .subscribe(
-                        new Consumer<List<Story>>() {
-                            @Override
-                            public void accept(@io.reactivex.annotations.NonNull List<Story> storyList) throws Exception {
-                                if (append) {
-                                    mNewsListView.appendStoryList(storyList);
-                                } else {
-                                    mNewsListView.showStoryList(storyList);
-                                }
-                                mNewsListView.hideRetry();
-                            }
-                        },
-                        new Consumer<Throwable>() {
-                            @Override
-                            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
-                                mNewsListView.showError(throwable.getMessage());
-                                mNewsListView.showRetry();
-                                mNewsListView.hideStoryList();
-                                mNewsListView.setLoadingIndicator(false);
-                            }
-                        },
-                        new Action() {
-                            @Override
-                            public void run() throws Exception {
-                                mNewsListView.setLoadingIndicator(false);
-                            }
-                        });
-        this.mDisposables.add(disposable);
-        Observable<List<Story>> localStoryList;
+
+       /* Observable<List<Story>> localStoryList;
         localStoryList = new Observable<List<Story>>() {
             @Override
             protected void subscribeActual(Observer<? super List<Story>> observer) {
@@ -133,7 +101,46 @@ class StoryListPresenter implements StoryListContract.Presenter {
                         mNewsListView.appendStoryList(storyList);
                     }
                 });
-        this.mDisposables.add(disposable1);
+        this.mDisposables.add(disposable1);*/
+
+        Disposable disposable = this.mRepository.getStories(date)
+                .subscribeOn(this.mSchedulerProvider.computation())
+                .observeOn(this.mSchedulerProvider.ui())
+                .subscribe(
+                        new Consumer<List<Story>>() {
+                            @Override
+                            public void accept(@io.reactivex.annotations.NonNull List<Story> storyList) throws Exception {
+                                JSONStore listLoader = new JSONStore(mContext);
+                                List<Story> storyLoadList = listLoader.loadList();
+                                storyList.addAll(storyLoadList);
+                                if (append) {
+                                    mNewsListView.appendStoryList(storyList);
+                                } else {
+                                    mNewsListView.showStoryList(storyList);
+                                }
+                                mNewsListView.hideRetry();
+                            }
+                        },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(@io.reactivex.annotations.NonNull Throwable throwable) throws Exception {
+                                JSONStore listLoader = new JSONStore(mContext);
+                                List<Story> storyLoadList = listLoader.loadList();
+                                mNewsListView.showStoryList(storyLoadList);
+                                mNewsListView.showError(throwable.getMessage());
+                                mNewsListView.showRetry();
+                                //mNewsListView.hideStoryList();
+                                mNewsListView.setLoadingIndicator(false);
+                            }
+                        },
+                        new Action() {
+                            @Override
+                            public void run() throws Exception {
+                                mNewsListView.setLoadingIndicator(false);
+                            }
+                        });
+        this.mDisposables.add(disposable);
+
     }
 
 }

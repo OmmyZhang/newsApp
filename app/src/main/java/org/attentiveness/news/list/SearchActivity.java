@@ -24,7 +24,7 @@ public class SearchActivity extends StoryListActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(null);
         setContentView(R.layout.activity_story_list);
         ButterKnife.bind(this);
         setup(R.drawable.ic_menu);
