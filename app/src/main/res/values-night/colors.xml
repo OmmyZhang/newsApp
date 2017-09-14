@@ -22,4 +22,5 @@
     <color name="text_divider">#A6A6A6</color>
 
     <color name="setting_background">#282828</color>
+    <color name="setting_title">#EEEEEE</color>
 </resources>

@@ -61,6 +61,7 @@ public class SearchFragment extends BaseFragment implements StoryListContract.Vi
         super.onCreate(savedInstanceState);
         this.mStoriesAdapter = new StoryListAdapter();
         this.mStoriesAdapter.setOnItemClickListener(this);
+        mStoriesAdapter.getResources(getActivity().getResources());
     }
 
     @Override
