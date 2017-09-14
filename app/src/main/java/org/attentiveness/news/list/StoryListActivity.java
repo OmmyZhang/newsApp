@@ -129,8 +129,11 @@ public class StoryListActivity extends BaseActivity {
                         //do nothing
                         break;
                     case R.id.nav_feedback:{
-                        JSONStore del = new JSONStore(StoryListActivity.this);
-                        del.deleteSettings();
+//                        JSONStore del = new JSONStore(StoryListActivity.this);
+//                        del.deleteSettings();
+
+//                        GlobalSetting.getINSTANCE().clearReadRecord();
+
                         break;
                     }
                     case R.id.nav_about:
